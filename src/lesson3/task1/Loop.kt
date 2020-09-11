@@ -211,16 +211,13 @@ fun squareSequenceDigit(n: Int): Int {
         pointer += "$sqr_buff".length
         sqr++
     }
-    var div = 10
-    var div2 = 1
     var i = 0
     while (pointer - n > i) {
-        div *= 10
-        div2 *= 10
+        sqr_buff /= 10
         i++
     }
 
-    return sqr_buff % div / div2
+    return sqr_buff % 10
 }
 
 /**
