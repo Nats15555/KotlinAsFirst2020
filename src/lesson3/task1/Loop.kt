@@ -202,15 +202,25 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
+    if (n == 1) return 1
     var sqr_buff = 0
     var sqr = 2
-    var sqr_str = "1"
-    while (sqr_str.length < n) {
+    var pointer = 1
+    while (pointer < n) {
         sqr_buff = sqr * sqr
-        sqr_str += "$sqr_buff"
+        pointer += "$sqr_buff".length
         sqr++
     }
-    return sqr_str[n - 1].toInt() - 48
+    var div = 10
+    var div2 = 1
+    var i = 0
+    while (pointer - n > i) {
+        div *= 10
+        div2 *= 10
+        i++
+    }
+
+    return sqr_buff % div / div2
 }
 
 /**
