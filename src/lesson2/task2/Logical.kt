@@ -73,14 +73,15 @@ fun circleInside(
     if (new_x2 == 5e-324) new_x2 = 0.0
     if (new_x1 == new_x2 && new_y1 == new_y2 && r1 == r2) return true
 
-    val p1 = new_x1+r1
-    val p2 = new_x1-r1
-    val p3 = new_y1-r1
-    val p4 = new_y1+r1
+    val p1 = new_x1 + r1
+    val p2 = new_x1 - r1
+    val p3 = new_y1 - r1
+    val p4 = new_y1 + r1
     if ((p1 - new_x2).pow(2) + (new_y1 - new_y2).pow(2) <= (r2).pow(2) &&
         (p2 - new_x2).pow(2) + (new_y1 - new_y2).pow(2) <= (r2).pow(2) &&
         (x1 - new_x2).pow(2) + (p3 - new_y2).pow(2) <= (r2).pow(2) &&
-        (x1 - new_x2).pow(2) + (p4 - new_y2).pow(2) <= (r2).pow(2)) return true
+        (x1 - new_x2).pow(2) + (p4 - new_y2).pow(2) <= (r2).pow(2)
+    ) return true
 
     return false
 
