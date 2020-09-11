@@ -270,7 +270,7 @@ fun russian(n: Int): String {
     )
     var str_array4: Array<String> = arrayOf(
         "тысяч",
-        "один тысяча",
+        "одна тысяча",
         "две тысячи",
         "три тысячи",
         "четыре тысячи",
