@@ -4,6 +4,7 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
+import kotlin.math.pow
 
 /**
  * Пример
@@ -20,7 +21,7 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
 fun isNumberHappy(number: Int): Boolean {
-    if ((number/100)/10 + (number/100)%10 == (number%100)/10 + (number%100)%10) return true
+    if ((number / 100) / 10 + (number / 100) % 10 == (number % 100) / 10 + (number % 100) % 10) return true
     return false
 }
 
@@ -44,11 +45,11 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    if (year%4 == 0){
-        if (year%100 != 0) return 29
-        if (year%400 == 0) return 29
+    if (year % 4 == 0 && month == 2) {
+        if (year % 100 != 0) return 29
+        if (year % 400 == 0) return 29
     }
-    return 28 + (month + month/8)%2 + 2 % month + 1 / month * 2
+    return 28 + (month + month / 8) % 2 + 2 % month + 1 / month * 2
 }
 
 /**
@@ -62,17 +63,29 @@ fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
 ): Boolean {
-    val p1 = x1+r1
-    val p2 = x1-r1
-    val p3 = y1-r1
-    val p4 = y1+r1
-    if (sqr(p1 - x2) + sqr(y1 - y2) <= sqr(r2) &&
-        sqr(p2 - x2) + sqr(y1 - y2) <= sqr(r2) &&
-        sqr(x1 - x2) + sqr(p3 - y2) <= sqr(r2) &&
-        sqr(x1 - x2) + sqr(p4 - y2) <= sqr(r2)) return true
+    var new_y1 = y1
+    var new_y2 = y2
+    var new_x1 = x1
+    var new_x2 = x2
+    if (new_y1 == 5e-324) new_y1 = 0.0
+    if (new_y2 == 5e-324) new_y2 = 0.0
+    if (new_x1 == 5e-324) new_x1 = 0.0
+    if (new_x2 == 5e-324) new_x2 = 0.0
+    if (new_x1 == new_x2 && new_y1 == new_y2 && r1 == r2) return true
+
+    val p1 = new_x1+r1
+    val p2 = new_x1-r1
+    val p3 = new_y1-r1
+    val p4 = new_y1+r1
+    if ((p1 - new_x2).pow(2) + (new_y1 - new_y2).pow(2) <= (r2).pow(2) &&
+        (p2 - new_x2).pow(2) + (new_y1 - new_y2).pow(2) <= (r2).pow(2) &&
+        (x1 - new_x2).pow(2) + (p3 - new_y2).pow(2) <= (r2).pow(2) &&
+        (x1 - new_x2).pow(2) + (p4 - new_y2).pow(2) <= (r2).pow(2)) return true
+
     return false
 
 }
+
 
 /**
  * Средняя (3 балла)
@@ -84,11 +97,11 @@ fun circleInside(
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    if(a<=s && b<=r) return true
-    if(a<=r && b<=s) return true
-    if(c<=s && b<=r) return true
-    if(c<=r && b<=s) return true
-    if(c<=s && a<=r) return true
-    if(c<=r && a<=s) return true
+    if (a <= s && b <= r) return true
+    if (a <= r && b <= s) return true
+    if (c <= s && b <= r) return true
+    if (c <= r && b <= s) return true
+    if (c <= s && a <= r) return true
+    if (c <= r && a <= s) return true
     return false
 }
