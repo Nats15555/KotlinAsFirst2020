@@ -241,7 +241,76 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var str_array1: Array<String> = arrayOf("", "I", "IV", "V", "IX")
+    var str_array2: Array<String> = arrayOf("", "X", "XL", "L", "XC")
+    var str_array3: Array<String> = arrayOf("", "C", "CD", "D", "CM")
+    var str_array4: Array<String> =
+        arrayOf("", "M", "MM", "MMM", "MMMM", "MMMMM", "MMMMMM", "MMMMMMM", "MMMMMMMM", "MMMMMMMMM")
+    var i = n
+    var flag = 1 // 4=1000 3=100 2=10 1=1
+    var roman_n = ""
+    var s = 0
+    while (i > 0) {
+        s = i % 10
+        if (flag == 1) {
+            when {
+                s == 9 -> roman_n = str_array1[4]
+                s == 8 -> roman_n = str_array1[3] + str_array1[1] + str_array1[1] + str_array1[1]
+                s == 7 -> roman_n = str_array1[3] + str_array1[1] + str_array1[1]
+                s == 6 -> roman_n = str_array1[3] + str_array1[1]
+                s == 5 -> roman_n = str_array1[3]
+                s == 4 -> roman_n = str_array1[2]
+                s == 3 -> roman_n = str_array1[1] + str_array1[1] + str_array1[1]
+                s == 2 -> roman_n = str_array1[1] + str_array1[1]
+                s == 1 -> roman_n = str_array1[1]
+            }
+        }
+        if (flag == 2) {
+            when {
+                s == 9 -> roman_n = str_array2[4] + roman_n
+                s == 8 -> roman_n = str_array2[3] + str_array2[1] + str_array2[1] + str_array2[1] + roman_n
+                s == 7 -> roman_n = str_array2[3] + str_array2[1] + str_array2[1] + roman_n
+                s == 6 -> roman_n = str_array2[3] + str_array2[1] + roman_n
+                s == 5 -> roman_n = str_array2[3] + roman_n
+                s == 4 -> roman_n = str_array2[2] + roman_n
+                s == 3 -> roman_n = str_array2[1] + str_array2[1] + str_array2[1] + roman_n
+                s == 2 -> roman_n = str_array2[1] + str_array2[1] + roman_n
+                s == 1 -> roman_n = str_array2[1] + roman_n
+            }
+        }
+        if (flag == 3) {
+            when {
+                s == 9 -> roman_n = str_array3[4] + roman_n
+                s == 8 -> roman_n = str_array3[3] + str_array3[1] + str_array3[1] + str_array3[1] + roman_n
+                s == 7 -> roman_n = str_array3[3] + str_array3[1] + str_array3[1] + roman_n
+                s == 6 -> roman_n = str_array3[3] + str_array3[1] + roman_n
+                s == 5 -> roman_n = str_array3[3] + roman_n
+                s == 4 -> roman_n = str_array3[2] + roman_n
+                s == 3 -> roman_n = str_array3[1] + str_array3[1] + str_array3[1] + roman_n
+                s == 2 -> roman_n = str_array3[1] + str_array3[1] + roman_n
+                s == 1 -> roman_n = str_array3[1] + roman_n
+            }
+        }
+        if (flag == 4) {
+            when {
+                s == 9 -> roman_n = str_array4[9] + roman_n
+                s == 8 -> roman_n = str_array4[8] + roman_n
+                s == 7 -> roman_n = str_array4[7] + roman_n
+                s == 6 -> roman_n = str_array4[6] + roman_n
+                s == 5 -> roman_n = str_array4[5] + roman_n
+                s == 4 -> roman_n = str_array4[4] + roman_n
+                s == 3 -> roman_n = str_array4[3] + roman_n
+                s == 2 -> roman_n = str_array4[2] + roman_n
+                s == 1 -> roman_n = str_array4[1] + roman_n
+            }
+        }
+
+        flag++
+        i /= 10
+    }
+    return roman_n
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -319,14 +388,14 @@ fun russian(n: Int): String {
         n_buf = i % 1000
         if (flag == 0) {
             if (n_buf % 100 < 20) {
-                str_buf = str_array3[n_buf / 100] + " " + str_array1[n_buf%100]
+                str_buf = str_array3[n_buf / 100] + " " + str_array1[n_buf % 100]
             } else {
                 str_buf = str_array3[n_buf / 100] + " " + str_array2[(n_buf / 10) % 10] + " " + str_array1[n_buf % 10]
             }
             flag = 1
         } else if (flag == 1) {
             if (n_buf % 100 < 20) {
-                str_buf = str_array3[n_buf / 100] + " " + str_array4[n_buf%100] + " " + str_buf
+                str_buf = str_array3[n_buf / 100] + " " + str_array4[n_buf % 100] + " " + str_buf
             } else {
                 str_buf =
                     str_array3[n_buf / 100] + " " + str_array2[(n_buf / 10) % 10] + " " + str_array4[n_buf % 10] +
@@ -335,7 +404,7 @@ fun russian(n: Int): String {
             flag = 2
         } else if (flag == 2) {
             if (n_buf % 100 < 20) {
-                str_buf = str_array3[n_buf / 100] + " " + str_array5[n_buf%100] + " " + str_buf
+                str_buf = str_array3[n_buf / 100] + " " + str_array5[n_buf % 100] + " " + str_buf
             } else {
                 str_buf =
                     str_array3[n_buf / 100] + " " + str_array2[(n_buf / 10) % 10] + " " + str_array5[n_buf % 10] +
@@ -346,5 +415,5 @@ fun russian(n: Int): String {
 
         i /= 1000
     }
-    return str_buf.trim().replace("  "," ")
+    return str_buf.trim().replace("  ", " ")
 }
