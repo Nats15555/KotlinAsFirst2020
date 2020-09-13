@@ -387,13 +387,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.write("<p>")
     writer.newLine()
 
-    var fl = true
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
-            if (!fl) {
-                writer.write("</p><p>")
-                fl = true
-            }
         } else {
             var i = 0
             while (i < line.length) {
@@ -408,9 +403,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             str_array1[index] = "*"
                         }
                         i++
-                        continue
                     }
-                    line[i] == '*' && line[i + 1] == '*' -> {
+                    line.length > (i + 1) && line[i] == '*' && line[i + 1] == '*' -> {
                         if (index != -1 && str_array1[index] == "**") {
                             writer.write("</b>")
                             index--
@@ -420,9 +414,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             str_array1[index] = "**"
                         }
                         i += 2
-                        continue
                     }
-                    line[i] == '~' && line[i + 1] == '~' -> {
+                    line.length > (i + 1) && line[i] == '~' && line[i + 1] == '~' -> {
                         if (index != -1 && str_array1[index] == "~~") {
                             writer.write("</s>")
                             index--
@@ -432,16 +425,28 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             str_array1[index] = "~~"
                         }
                         i += 2
-                        continue
+                    }
+                    line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 'n' -> {
+                        if (line.length > (i + 4) && line[i + 2] == '\\' && line[i + 3] == 'n') {
+                            writer.write("</p><p>")
+                            i += 4
+                        } else {
+                            i += 2
+                        }
+                    }
+                    line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 't' -> {
+                        i += 2
+                    }
+                    line.length > (i + 1) && line[i] == '\\' && line[i + 1] == '\\' -> {
+                        writer.write("\\\\")
+                        i += 2
                     }
                     else -> {
                         writer.write("" + line[i])
                         i++
-                        continue
                     }
                 }
             }
-            fl = false
         }
 
     }

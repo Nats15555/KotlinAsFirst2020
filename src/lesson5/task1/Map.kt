@@ -196,6 +196,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var str = ""
     var min = 1.0
     var f = true
+    var ret_null = true
     for ((name, item) in stuff) {
         var (pair_name, pair_cost) = item
         if (f) {
@@ -205,9 +206,10 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
         if (pair_name == kind && pair_cost <= min) {
             min = pair_cost
             str = name
+            ret_null = false
         }
     }
-    if (str == "") return null
+    if (ret_null) return null
     return str
 }
 
