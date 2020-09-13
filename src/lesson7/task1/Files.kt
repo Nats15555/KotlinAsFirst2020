@@ -394,14 +394,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.newLine()
     writer.write("<p>")
     writer.newLine()
-    var tabs = false
 
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
-            if (!tabs) {
-                writer.write("</p><p>")
-                tabs = true
-            }
+            writer.write("</p><p>")
         } else {
             var i = 0
             while (i < line.length) {
@@ -417,7 +413,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         }
                         i++
                     }
-                    !(line.length > (i + 1)) && line[i] == '*' -> {
+                    !(line.length > (i+1)) && line[i] == '*' ->{
                         if (index != -1 && str_array1[index] == "*") {
                             writer.write("</i>")
                             index--
@@ -453,7 +449,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     else -> {
                         writer.write("" + line[i])
                         i++
-                        tabs = false
                     }
                 }
             }
