@@ -417,6 +417,17 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         }
                         i++
                     }
+                    !(line.length > (i+1)) && line[i] == '*' ->{
+                        if (index != -1 && str_array1[index] == "*") {
+                            writer.write("</i>")
+                            index--
+                        } else {
+                            writer.write("<i>")
+                            index++
+                            str_array1[index] = "*"
+                        }
+                        i++
+                    }
                     line.length > (i + 1) && line[i] == '*' && line[i + 1] == '*' -> {
                         if (index != -1 && str_array1[index] == "**") {
                             writer.write("</b>")
