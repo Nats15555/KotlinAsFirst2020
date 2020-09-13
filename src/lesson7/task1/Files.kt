@@ -72,7 +72,10 @@ fun deleteMarked(inputName: String, outputName: String) {
             writer.newLine()
         } else if (line[0] == '_') {
             if (!f) writer.newLine() else writer.write("")
-        } else writer.write(line)
+        } else {
+            writer.write(line)
+            writer.newLine()
+        }
         f = false
     }
 
@@ -108,7 +111,6 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
 fun sibilants(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var i = 0
-    var sym = ""
     var f = false
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
@@ -120,22 +122,17 @@ fun sibilants(inputName: String, outputName: String) {
                     if (line[i] == 'ж' || line[i] == 'ш' || line[i] == 'щ' || line[i] == 'ч' ||
                         line[i] == 'Ж' || line[i] == 'Ш' || line[i] == 'Щ' || line[i] == 'Ч'
                     ) f = true
-
-                    sym += line[i]
-                    writer.write(sym)
-                    sym = ""
+                    writer.write("" + line[i])
                 } else {
                     when {
-                        line[i] == 'ы' -> sym += 'и'
-                        line[i] == 'ю' -> sym += 'у'
-                        line[i] == 'я' -> sym += 'а'
-                        line[i] == 'Ы' -> sym += 'И'
-                        line[i] == 'Ю' -> sym += 'У'
-                        line[i] == 'Я' -> sym += 'А'
-                        else -> sym += line[i]
+                        line[i] == 'ы' -> writer.write("и")
+                        line[i] == 'ю' -> writer.write("у")
+                        line[i] == 'я' -> writer.write("а")
+                        line[i] == 'Ы' -> writer.write("И")
+                        line[i] == 'Ю' -> writer.write("У")
+                        line[i] == 'Я' -> writer.write("А")
+                        else -> writer.write("" + line[i])
                     }
-                    writer.write(sym)
-                    sym = ""
                     f = false
                 }
                 i++
@@ -285,7 +282,8 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 } else if (dictionary[line[i].toUpperCase()] != null) {
                     writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
                 } else {
-                    writer.write(strCase("" + line[i], first))
+                    if(dictionary.size > 0) writer.write(strCase("" + line[i], first))
+                    else writer.write("" + line[i])
                 }
                 first = false
                 i++
@@ -373,7 +371,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var str_array1: Array<String> = arrayOf("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+    var str_array1 = Array(1000,{""})
     var index = -1
     writer.write("<html>")
     writer.newLine()

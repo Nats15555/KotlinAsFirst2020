@@ -63,6 +63,7 @@ Basic, Ruby, Swift.
         assertFileContent(
             "temp.txt",
             """Задачи _надо_ решать правильно,
+
 и не надо при этом никуда торопиться___
             """.trimIndent()
         )
