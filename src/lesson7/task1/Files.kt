@@ -440,14 +440,19 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         i += 2
                     }
                     line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 'n' -> {
-                        if (line.length > (i + 4) && line[i + 2] == '\\' && line[i + 3] == 'n' && !tabs) {
+                        var j = 0
+                        while (j + i + 2 < line.length && line[i + 2 + j] == ' '){
+                            j++
+                        }
+                        if (line.length > (i + 4 + j) && line[i + 2 + j] == '\\' && line[i + 3 + j] == 'n' && !tabs) {
                             writer.write("</p><p>")
-                            i += 4
+                            i += 4 + j
                             tabs = true
                         } else {
                             i += 2
                         }
                     }
+
                     line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 't' -> {
                         i += 2
                     }
