@@ -75,6 +75,7 @@ fun deleteMarked(inputName: String, outputName: String) {
             writer.write(line)
             first = false
         }
+        if (!first) writer.newLine()
     }
 
     writer.close()
@@ -143,6 +144,7 @@ fun sibilants(inputName: String, outputName: String) {
                 i++
             }
             writer.newLine()
+            f = false
         }
     }
     writer.close()
@@ -287,8 +289,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 } else if (dictionary[line[i].toUpperCase()] != null) {
                     writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
                 } else {
-                    if (first) writer.write("" + line[i])
-                    else writer.write(strCase("" + line[i], first))
+                    writer.write("" + line[i])
                 }
                 first = false
                 i++
