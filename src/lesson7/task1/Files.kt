@@ -394,7 +394,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.newLine()
     writer.write("<p>")
     writer.newLine()
-    var tabs = false
+    var tabs = true
 
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
@@ -456,6 +456,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             i += 4 + j
                             tabs = true
                         } else {
+                            writer.write("\n")
                             i += 2
                         }
                     }
