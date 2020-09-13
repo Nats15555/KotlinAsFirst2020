@@ -461,6 +461,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
     }
+
     writer.newLine()
     writer.write("</p>")
     writer.newLine()
