@@ -3,7 +3,6 @@
 package lesson7.task1
 
 import java.io.File
-import kotlin.math.abs
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -67,18 +66,19 @@ fun deleteMarked(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var first = true
     for (line in File(inputName).readLines()) {
-        if (!line.isEmpty() && line[0] == '_'){
+        if (!line.isEmpty() && line[0] == '_') {
             first = false
-        } else if (!line.isEmpty()){
+        } else if (!line.isEmpty()) {
             writer.write(line.trim())
             writer.newLine()
             first = false
-        } else{
+        } else {
             if (!first) writer.newLine()
         }
     }
 
     writer.close()
+    return
 }
 
 /**
@@ -308,7 +308,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
     }
 
     writer.close()
-    returnty
+    return
 }
 
 /**
@@ -636,6 +636,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 3
 
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
+ *
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
