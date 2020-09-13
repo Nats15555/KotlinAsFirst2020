@@ -65,18 +65,16 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun deleteMarked(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var f = true
-
+    var first = true
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
-            writer.newLine()
+            if (!first) writer.newLine()
         } else if (line[0] == '_') {
-            if (!f) writer.newLine() else writer.write("")
+            if (!first) writer.newLine() else writer.write("")
         } else {
             writer.write(line)
-            writer.newLine()
+            first = false
         }
-        f = false
     }
 
     writer.close()
@@ -131,6 +129,13 @@ fun sibilants(inputName: String, outputName: String) {
                         line[i] == 'Ы' -> writer.write("И")
                         line[i] == 'Ю' -> writer.write("У")
                         line[i] == 'Я' -> writer.write("А")
+                        line[i] == 'ж' || line[i] == 'ш' || line[i] == 'щ' || line[i] == 'ч' ||
+                                line[i] == 'Ж' || line[i] == 'Ш' || line[i] == 'Щ' || line[i] == 'Ч' -> {
+                            f = true
+                            writer.write("" + line[i])
+                            i++
+                            continue
+                        }
                         else -> writer.write("" + line[i])
                     }
                     f = false
@@ -282,8 +287,8 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                 } else if (dictionary[line[i].toUpperCase()] != null) {
                     writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
                 } else {
-                    if(dictionary.size > 0) writer.write(strCase("" + line[i], first))
-                    else writer.write("" + line[i])
+                    if (first) writer.write("" + line[i])
+                    else writer.write(strCase("" + line[i], first))
                 }
                 first = false
                 i++
@@ -371,7 +376,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    var str_array1 = Array(1000,{""})
+    var str_array1 = Array(1000, { "" })
     var index = -1
     writer.write("<html>")
     writer.newLine()
@@ -379,6 +384,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.newLine()
     writer.write("<p>")
     writer.newLine()
+
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             writer.write("</p><p>")
