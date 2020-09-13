@@ -276,7 +276,6 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
 
     val writer = File(outputName).bufferedWriter()
     var i = 0
-    var first = true
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             writer.newLine()
@@ -284,15 +283,24 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
             i = 0
             while (i < line.length) {
                 if (dictionary[line[i].toLowerCase()] != null) {
-                    if (line[i].toLowerCase() == line[i]) first = false
-                    writer.write(strCase("" + dictionary[line[i].toLowerCase()], first))
+                    if (line[i].toLowerCase() == line[i]) writer.write(
+                        strCase(
+                            "" + dictionary[line[i].toLowerCase()],
+                            false
+                        )
+                    )
+                    else writer.write(strCase("" + dictionary[line[i].toLowerCase()], true))
                 } else if (dictionary[line[i].toUpperCase()] != null) {
-                    if (line[i].toUpperCase() == line[i]) first = true
-                    writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
+                    if (line[i].toLowerCase() == line[i]) writer.write(
+                        strCase(
+                            "" + dictionary[line[i].toLowerCase()],
+                            false
+                        )
+                    )
+                    else writer.write(strCase("" + dictionary[line[i].toLowerCase()], true))
                 } else {
                     writer.write("" + line[i])
                 }
-                first = false
                 i++
             }
             writer.newLine()
@@ -386,6 +394,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.newLine()
     writer.write("<p>")
     writer.newLine()
+    var tabs = false
 
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
@@ -427,9 +436,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         i += 2
                     }
                     line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 'n' -> {
-                        if (line.length > (i + 4) && line[i + 2] == '\\' && line[i + 3] == 'n') {
+                        if (line.length > (i + 4) && line[i + 2] == '\\' && line[i + 3] == 'n' && !tabs) {
                             writer.write("</p><p>")
                             i += 4
+                            tabs = true
                         } else {
                             i += 2
                         }
@@ -444,6 +454,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     else -> {
                         writer.write("" + line[i])
                         i++
+                        tabs = false
                     }
                 }
             }
