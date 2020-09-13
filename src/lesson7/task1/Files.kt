@@ -406,7 +406,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             var i = 0
             while (i < line.length) {
                 when {
-                    line[i] == '*' && line[i + 1] != '*' -> {
+                    line.length > (i + 1) && line[i] == '*' && line[i + 1] != '*' -> {
                         if (index != -1 && str_array1[index] == "*") {
                             writer.write("</i>")
                             index--
@@ -641,7 +641,6 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 3
 
  * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
- *
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
