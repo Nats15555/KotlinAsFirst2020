@@ -398,7 +398,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
-            if (!tabs) {
+            if (!tabs){
                 writer.write("</p><p>")
                 tabs = true
             }
@@ -406,19 +406,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             var i = 0
             while (i < line.length) {
                 when {
-                    line[i] == '*' -> {
-                        if (line.length > (i + 1) && line[i + 1] != '*') {
-                            if (index != -1 && str_array1[index] == "*") {
-                                writer.write("</i>")
-                                index--
-                            } else {
-                                writer.write("<i>")
-                                index++
-                                str_array1[index] = "*"
-                            }
-                        }
-                        i++
-                    }
                     line.length > (i + 1) && line[i] == '*' && line[i + 1] == '*' -> {
                         if (index != -1 && str_array1[index] == "**") {
                             writer.write("</b>")
@@ -429,6 +416,17 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                             str_array1[index] = "**"
                         }
                         i += 2
+                    }
+                    line.length > (i + 1) && line[i] == '*' && line[i + 1] != '*' -> {
+                        if (index != -1 && str_array1[index] == "*") {
+                            writer.write("</i>")
+                            index--
+                        } else {
+                            writer.write("<i>")
+                            index++
+                            str_array1[index] = "*"
+                        }
+                        i++
                     }
                     line.length > (i + 1) && line[i] == '~' && line[i + 1] == '~' -> {
                         if (index != -1 && str_array1[index] == "~~") {
@@ -443,7 +441,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     }
                     line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 'n' -> {
                         var j = 0
-                        while (j + i + 2 < line.length && line[i + 2 + j] == ' ') {
+                        while (j + i + 2 < line.length && line[i + 2 + j] == ' '){
                             j++
                         }
                         if (line.length > (i + 4 + j) && line[i + 2 + j] == '\\' && line[i + 3 + j] == 'n' && !tabs) {
