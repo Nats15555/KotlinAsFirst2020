@@ -71,11 +71,11 @@ fun deleteMarked(inputName: String, outputName: String) {
             if (!first) writer.newLine()
         } else if (line[0] == '_') {
             if (!first) writer.newLine() else writer.write("")
+            first = false
         } else {
-            writer.write(line)
+            writer.write(line.trim())
             first = false
         }
-        if (!first) writer.newLine()
     }
 
     writer.close()
@@ -285,6 +285,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
             i = 0
             while (i < line.length) {
                 if (dictionary[line[i].toLowerCase()] != null) {
+                    if (line[i].toLowerCase() == line[i]) first = false
                     writer.write(strCase("" + dictionary[line[i].toLowerCase()], first))
                 } else if (dictionary[line[i].toUpperCase()] != null) {
                     writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
@@ -386,9 +387,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.write("<p>")
     writer.newLine()
 
+    var fl = true
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
-            writer.write("</p><p>")
+            if (!fl) {
+                writer.write("</p><p>")
+                fl = true
+            }
         } else {
             var i = 0
             while (i < line.length) {
@@ -436,7 +441,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     }
                 }
             }
-
+            fl = false
         }
 
     }
