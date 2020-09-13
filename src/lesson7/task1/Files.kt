@@ -67,19 +67,18 @@ fun deleteMarked(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var first = true
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) {
-            if (!first) writer.newLine()
-        } else if (line[0] == '_') {
-            if (!first) writer.newLine() else writer.write("")
+        if (!line.isEmpty() && line[0] == '_'){
             first = false
-        } else {
+        } else if (!line.isEmpty()){
             writer.write(line.trim())
+            writer.newLine()
             first = false
+        } else{
+            if (!first) writer.newLine()
         }
     }
 
     writer.close()
-    return
 }
 
 /**
@@ -288,6 +287,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                     if (line[i].toLowerCase() == line[i]) first = false
                     writer.write(strCase("" + dictionary[line[i].toLowerCase()], first))
                 } else if (dictionary[line[i].toUpperCase()] != null) {
+                    if (line[i].toLowerCase() == line[i]) first = true
                     writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
                 } else {
                     writer.write("" + line[i])
