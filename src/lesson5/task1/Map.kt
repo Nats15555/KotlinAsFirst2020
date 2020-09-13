@@ -108,7 +108,10 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+    for ((str1, str2) in a) if (b[str1] != str2) return false
+    return true
+}
 
 /**
  * Простая (2 балла)
@@ -125,7 +128,8 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    for ((str1, str2) in b) if (a[str1] == str2) a.remove(str1)
+    return
 }
 
 /**
@@ -135,7 +139,11 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val l = mutableListOf<String>()
+    for (item in a) if (item in b && !(item in l)) l.add(item)
+    return l
+}
 
 /**
  * Средняя (3 балла)
@@ -168,6 +176,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
 
+
 /**
  * Средняя (4 балла)
  *
@@ -183,7 +192,24 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var str = ""
+    var min = 1.0
+    var f = true
+    for ((name, item) in stuff) {
+        var (pair_name, pair_cost) = item
+        if (f) {
+            min = pair_cost
+            f = false
+        }
+        if (pair_name == kind && pair_cost <= min) {
+            min = pair_cost
+            str = name
+        }
+    }
+    if (str == "") return null
+    return str
+}
 
 /**
  * Средняя (3 балла)
@@ -208,7 +234,19 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    var map: MutableMap<String, Int> = mutableMapOf()
+    for (i in list) {
+        var count = 0
+        for (item in list) {
+            if (item == i) {
+                map[i] = ++count
+            }
+        }
+        if (count == 1) map.remove(i)
+    }
+    return map
+}
 
 /**
  * Средняя (3 балла)

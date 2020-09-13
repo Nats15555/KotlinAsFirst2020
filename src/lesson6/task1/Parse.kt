@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import kotlinx.html.attributes.stringSetDecode
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +76,73 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun daysInMonth(month: Int, year: Int): Int {
+    if (year % 4 == 0 && month == 2) {
+        if (year % 100 != 0) return 29
+        if (year % 400 == 0) return 29
+    }
+    return 28 + (month + month / 8) % 2 + 2 % month + 1 / month * 2
+}
+
+fun dateStrToDigit(str: String): String {
+    var return_string = ""
+    var num1_str = ""
+    var num2_str = ""
+    var num3_str = ""
+    var num1 = 0
+    var num3 = 0
+    var i = 0
+    var str_array: Array<String> = arrayOf(
+        "",
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря",
+        ""
+    )
+    while (i < str.length && str[i] != ' ') {
+        if (!(str[i] >= '0' && str[i] <= '9')) return ""
+        num1 = num1 * 10 + str[i].toInt() - 48
+        num1_str += str[i]
+        i++
+    }
+    if (i == str.length) return ""
+
+    i++
+    while (i < str.length && str[i] != ' ') {
+        num2_str += str[i]
+        i++
+    }
+    if (i == str.length) return ""
+
+    i++
+    while (i < str.length) {
+        if (!(str[i] >= '0' && str[i] <= '9')) return ""
+        num3 = num3 * 10 + str[i].toInt() - 48
+        num3_str += str[i]
+        i++
+    }
+
+    i = 0
+    while (i < 13 && (num2_str != str_array[i])) i++
+    if (i == 13) return ""
+    if (daysInMonth(i, num3) < num1) return ""
+
+    num2_str = "$i"
+    if (num2_str.length < 2) num2_str = '0' + num2_str
+    if (num1_str.length < 2) num1_str = '0' + num1_str
+    return_string = num1_str + '.' + num2_str + '.' + num3_str
+
+    return return_string
+}
 
 /**
  * Средняя (4 балла)
@@ -86,7 +154,64 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    var str = digital
+    var return_string = ""
+    var num1_str = ""
+    var num2_str = ""
+    var num3_str = ""
+    var num1 = 0
+    var num2 = 0
+    var num3 = 0
+    var i = 0
+    var str_array: Array<String> = arrayOf(
+        "",
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    while (i < str.length && str[i] != '.') {
+        if (!(str[i] >= '0' && str[i] <= '9')) return ""
+        num1 = num1 * 10 + str[i].toInt() - 48
+        num1_str += str[i]
+        i++
+    }
+    if (i == str.length) return ""
+
+    i++
+    while (i < str.length && str[i] != '.') {
+        if (!(str[i] >= '0' && str[i] <= '9')) return ""
+        num2 = num2 * 10 + str[i].toInt() - 48
+        i++
+    }
+    if (i == str.length) return ""
+    if (!(num2 > 0 && num2 <= 12)) return ""
+
+    i++
+    while (i < str.length) {
+        if (!(str[i] >= '0' && str[i] <= '9')) return ""
+        num3 = num3 * 10 + str[i].toInt() - 48
+        num3_str += str[i]
+        i++
+    }
+    if (num3_str == "") return ""
+    if (daysInMonth(num2, num3) < num1) return ""
+
+    num2_str = str_array[num2]
+    if (num1 < 10) num1_str = "" + num1_str[1]
+    return_string = num1_str + " " + num2_str + " " + num3_str
+
+    return return_string
+}
 
 /**
  * Средняя (4 балла)
@@ -114,7 +239,48 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var index = 0
+    var i = 0
+    var max = -1
+    var num = 0
+    var flag = false
+    var flag2 = false
+    var number_sting = "0123456789"
+    var allow_string = "0123456789-% "
+    while (index < jumps.length) {
+        i = 0
+        while (i < number_sting.length) {
+            flag = false
+            if (jumps[index] == number_sting[i]) {
+                num = num * 10 + i
+                flag = true
+                flag2 = true
+                break //exit while
+            }
+            i++
+        }
+        if (!flag) {
+            if (num > max) max = num
+            num = 0
+        }
+
+        i = 0
+        flag = false
+        while (i < allow_string.length) {
+            if (jumps[index] == allow_string[i]) {
+                flag = true
+                break
+            }
+            i++
+        }
+        if (!flag) return -1
+        index++
+    }
+    if (num > max) max = num
+    if (!flag2) return -1
+    return max
+}
 
 /**
  * Сложная (6 баллов)
