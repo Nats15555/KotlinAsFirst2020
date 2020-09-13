@@ -394,28 +394,19 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     writer.newLine()
     writer.write("<p>")
     writer.newLine()
-    var flag = true
+    var tabs = false
 
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
-            if (!flag) writer.write("</p><p>")
-
+            if (!tabs) {
+                writer.write("</p><p>")
+                tabs = true
+            }
         } else {
             var i = 0
             while (i < line.length) {
                 when {
                     line.length > (i + 1) && line[i] == '*' && line[i + 1] != '*' -> {
-                        if (index != -1 && str_array1[index] == "*") {
-                            writer.write("</i>")
-                            index--
-                        } else {
-                            writer.write("<i>")
-                            index++
-                            str_array1[index] = "*"
-                        }
-                        i++
-                    }
-                    !(line.length > (i+1)) && line[i] == '*' ->{
                         if (index != -1 && str_array1[index] == "*") {
                             writer.write("</i>")
                             index--
@@ -448,10 +439,32 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                         }
                         i += 2
                     }
+                    line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 'n' -> {
+                        var j = 0
+                        while (j + i + 2 < line.length && line[i + 2 + j] == ' ') {
+                            j++
+                        }
+                        if (line.length > (i + 4 + j) && line[i + 2 + j] == '\\' && line[i + 3 + j] == 'n' && !tabs) {
+                            writer.write("</p><p>")
+                            i += 4 + j
+                            tabs = true
+                        } else {
+                            i += 2
+                        }
+                    }
+
+                    line.length > (i + 1) && line[i] == '\\' && line[i + 1] == 't' -> {
+                        writer.write("\t")
+                        i += 2
+                    }
+                    line.length > (i + 1) && line[i] == '\\' && line[i + 1] == '\\' -> {
+                        writer.write("\\\\")
+                        i += 2
+                    }
                     else -> {
                         writer.write("" + line[i])
                         i++
-                        flag = false
+                        tabs = false
                     }
                 }
             }
