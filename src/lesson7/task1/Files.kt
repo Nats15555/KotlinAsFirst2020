@@ -287,7 +287,7 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
                     if (line[i].toLowerCase() == line[i]) first = false
                     writer.write(strCase("" + dictionary[line[i].toLowerCase()], first))
                 } else if (dictionary[line[i].toUpperCase()] != null) {
-                    if (line[i].toLowerCase() == line[i]) first = true
+                    if (line[i].toUpperCase() == line[i]) first = true
                     writer.write(strCase("" + dictionary[line[i].toUpperCase()], first))
                 } else {
                     writer.write("" + line[i])
