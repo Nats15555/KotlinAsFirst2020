@@ -263,8 +263,7 @@ fun fibSequenceDigit(n: Int): Int {
         fib2 = fibSum
         digit += digitCapacity(fib2)
     }
-
-    fib2 %= tenPow(digit - (n - 1))
-    fib2 /= tenPow(digit - (n - 1) - 1)
+    fib2 /= tenPow(digit - n)
+    fib2 %= 10
     return fib2
 }

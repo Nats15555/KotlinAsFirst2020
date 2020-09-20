@@ -79,7 +79,7 @@ fun main() {
  */
 
 fun dateStrToDigit(str: String): String {
-    val months = listOf(
+    val monthArray = listOf(
         "января",
         "февраля",
         "марта",
@@ -102,8 +102,8 @@ fun dateStrToDigit(str: String): String {
 
     try {
         day = parts[0].toInt()
-        month = months.indexOf(parts[1]) + 1
-        if (month == 0) return ""
+        month = monthArray.indexOf(parts[1]) + 1
+        if (month > 12 || month < 1) return ""
         year = parts[2].toInt()
     } catch (e: NumberFormatException) {
         return ""
@@ -124,7 +124,7 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    val mounths = listOf(
+    val monthArray = listOf(
         "января",
         "февраля",
         "марта",
@@ -152,9 +152,9 @@ fun dateDigitToStr(digital: String): String {
         return ""
     }
 
-    if (month < 1) return ""
+    if (month > 12 || month < 1) return ""
     if (day > daysInMonth(month, year)) return ""
-    return String.format("%d %s %d", day, mounths[month - 1], year)
+    return String.format("%d %s %d", day, monthArray[month - 1], year)
 }
 
 /**
@@ -190,8 +190,8 @@ fun bestLongJump(jumps: String): Int {
     var num = 0
     var flag = false
     var flag2 = false
-    val number_sting = "0123456789"
-    val allow_string = "0123456789-% "
+    var number_sting = "0123456789"
+    var allow_string = "0123456789-% "
     while (index < jumps.length) {
         i = 0
         while (i < number_sting.length) {
