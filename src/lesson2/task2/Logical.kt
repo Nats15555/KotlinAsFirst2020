@@ -4,7 +4,7 @@ package lesson2.task2
 
 import lesson1.task1.sqr
 import kotlin.math.abs
-import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * Пример
@@ -59,7 +59,7 @@ fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
 ): Boolean =
-    sqr(sqr(x1 - x2) + sqr(y1 - y2)) + r2 <= r1
+    sqrt(sqr(x2 - x1) + sqr(y2 - y1)) + r1 <= r2
 
 
 /**
@@ -72,11 +72,6 @@ fun circleInside(
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    if (a <= s && b <= r) return true
-    else if (a <= r && b <= s) return true
-    else if (c <= s && b <= r) return true
-    else if (c <= r && b <= s) return true
-    else if (c <= s && a <= r) return true
-    else if (c <= r && a <= s) return true
-    return false
+    return ((a <= s && b <= r) || (a <= r && b <= s) || (c <= s && b <= r) || (c <= r && b <= s) ||
+            (c <= s && a <= r) || (c <= r && a <= s))
 }

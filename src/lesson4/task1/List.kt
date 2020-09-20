@@ -242,9 +242,9 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C.
  */
 fun roman(n: Int): String {
-    val strArray1 = arrayOf("", "I", "IV", "V", "IX")
-    val strArray2  = arrayOf("", "X", "XL", "L", "XC")
-    val strArray3 = arrayOf("", "C", "CD", "D", "CM")
+    val strArray1 = arrayOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+    val strArray2 = arrayOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+    val strArray3 = arrayOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
     val strArray4 =
         arrayOf("", "M", "MM", "MMM", "MMMM", "MMMMM", "MMMMMM", "MMMMMMM", "MMMMMMMM", "MMMMMMMMM")
     var i = n
@@ -254,56 +254,16 @@ fun roman(n: Int): String {
     while (i > 0) {
         s = i % 10
         if (flag == 1) {
-            when {
-                s == 9 -> roman = strArray1[4]
-                s == 8 -> roman = strArray1[3] + strArray1[1] + strArray1[1] + strArray1[1]
-                s == 7 -> roman = strArray1[3] + strArray1[1] + strArray1[1]
-                s == 6 -> roman = strArray1[3] + strArray1[1]
-                s == 5 -> roman = strArray1[3]
-                s == 4 -> roman = strArray1[2]
-                s == 3 -> roman = strArray1[1] + strArray1[1] + strArray1[1]
-                s == 2 -> roman = strArray1[1] + strArray1[1]
-                s == 1 -> roman = strArray1[1]
-            }
+            roman = strArray1[s] + roman
         }
         if (flag == 2) {
-            when {
-                s == 9 -> roman = strArray2[4] + roman
-                s == 8 -> roman = strArray2[3] + strArray2[1] + strArray2[1] + strArray2[1] + roman
-                s == 7 -> roman = strArray2[3] + strArray2[1] + strArray2[1] + roman
-                s == 6 -> roman = strArray2[3] + strArray2[1] + roman
-                s == 5 -> roman = strArray2[3] + roman
-                s == 4 -> roman = strArray2[2] + roman
-                s == 3 -> roman = strArray2[1] + strArray2[1] + strArray2[1] + roman
-                s == 2 -> roman = strArray2[1] + strArray2[1] + roman
-                s == 1 -> roman = strArray2[1] + roman
-            }
+            roman = strArray2[s] + roman
         }
         if (flag == 3) {
-            when {
-                s == 9 -> roman = strArray3[4] + roman
-                s == 8 -> roman = strArray3[3] + strArray3[1] + strArray3[1] + strArray3[1] + roman
-                s == 7 -> roman = strArray3[3] + strArray3[1] + strArray3[1] + roman
-                s == 6 -> roman = strArray3[3] + strArray3[1] + roman
-                s == 5 -> roman = strArray3[3] + roman
-                s == 4 -> roman = strArray3[2] + roman
-                s == 3 -> roman = strArray3[1] + strArray3[1] + strArray3[1] + roman
-                s == 2 -> roman = strArray3[1] + strArray3[1] + roman
-                s == 1 -> roman = strArray3[1] + roman
-            }
+            roman = strArray3[s] + roman
         }
         if (flag == 4) {
-            when {
-                s == 9 -> roman = strArray4[9] + roman
-                s == 8 -> roman = strArray4[8] + roman
-                s == 7 -> roman = strArray4[7] + roman
-                s == 6 -> roman = strArray4[6] + roman
-                s == 5 -> roman = strArray4[5] + roman
-                s == 4 -> roman = strArray4[4] + roman
-                s == 3 -> roman = strArray4[3] + roman
-                s == 2 -> roman = strArray4[2] + roman
-                s == 1 -> roman = strArray4[1] + roman
-            }
+            roman = strArray4[s] + roman
         }
 
         flag++
@@ -323,21 +283,21 @@ fun russian(n: Int): String {
     var i = n
     var strBuf = ""
 
-    var strArray1: Array<String> = arrayOf(
+    val strArray1: Array<String> = arrayOf(
         "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
         "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
         "восемнадцать", "девятнадцать"
     )
-    var strArray2: Array<String> = arrayOf(
+    val strArray2: Array<String> = arrayOf(
         "", "",
         "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
     )
-    var strArray3: Array<String> = arrayOf(
+    val strArray3: Array<String> = arrayOf(
         "",
         "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот",
         "девятьсот"
     )
-    var strArray4: Array<String> = arrayOf(
+    val strArray4: Array<String> = arrayOf(
         "тысяч",
         "одна тысяча",
         "две тысячи",
@@ -359,7 +319,7 @@ fun russian(n: Int): String {
         "восемнадцать тысяч",
         "девятнадцать тысяч"
     )
-    var strArray5: Array<String> = arrayOf(
+    val strArray5: Array<String> = arrayOf(
         "миллионов",
         "один миллион",
         "два миллиона",

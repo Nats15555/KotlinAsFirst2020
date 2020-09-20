@@ -79,87 +79,7 @@ fun main() {
  */
 
 fun dateStrToDigit(str: String): String {
-    var returnString = ""
-    var num1Str = ""
-    var num2Str = ""
-    var num3Str = ""
-    var num1 = 0
-    var num3 = 0
-    var i = 0
-    var strArray: Array<String> = arrayOf(
-        "",
-        "января",
-        "февраля",
-        "марта",
-        "апреля",
-        "мая",
-        "июня",
-        "июля",
-        "августа",
-        "сентября",
-        "октября",
-        "ноября",
-        "декабря",
-        ""
-    )
-    while (i < str.length && str[i] != ' ') {
-        if (!(str[i] >= '0' && str[i] <= '9')) return ""
-        num1 = num1 * 10 + str[i].toInt() - 48
-        num1Str += str[i]
-        i++
-    }
-    if (i == str.length) return ""
-
-    i++
-    while (i < str.length && str[i] != ' ') {
-        num2Str += str[i]
-        i++
-    }
-    if (i == str.length) return ""
-
-    i++
-    while (i < str.length) {
-        if (!(str[i] >= '0' && str[i] <= '9')) return ""
-        num3 = num3 * 10 + str[i].toInt() - 48
-        num3Str += str[i]
-        i++
-    }
-
-    i = 0
-    while (i < 13 && (num2Str != strArray[i])) i++
-    if (i == 13) return ""
-    if (daysInMonth(i, num3) < num1) return ""
-
-    num2Str = "$i"
-    if (num2Str.length < 2) num2Str = '0' + num2Str
-    if (num1Str.length < 2) num1Str = '0' + num1Str
-    returnString = num1Str + '.' + num2Str + '.' + num3Str
-
-    return returnString
-}
-
-/**
- * Средняя (4 балла)
- *
- * Дата представлена строкой вида "15.07.2016".
- * Перевести её в строковый формат вида "15 июля 2016".
- * При неверном формате входной строки вернуть пустую строку
- *
- * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
- * входными данными.
- */
-fun dateDigitToStr(digital: String): String {
-    var str = digital
-    var return_string = ""
-    var num1_str = ""
-    var num2_str = ""
-    var num3_str = ""
-    var num1 = 0
-    var num2 = 0
-    var num3 = 0
-    var i = 0
-    var str_array: Array<String> = arrayOf(
-        "",
+    val months = listOf(
         "января",
         "февраля",
         "марта",
@@ -173,38 +93,68 @@ fun dateDigitToStr(digital: String): String {
         "ноября",
         "декабря"
     )
-    while (i < str.length && str[i] != '.') {
-        if (!(str[i] >= '0' && str[i] <= '9')) return ""
-        num1 = num1 * 10 + str[i].toInt() - 48
-        num1_str += str[i]
-        i++
+    val parts = str.split(" ")
+    if (parts.size != 3) return ""
+
+    val day: Int
+    val month: Int
+    val year: Int
+
+    try {
+        day = parts[0].toInt()
+        month = months.indexOf(parts[1]) + 1
+        if (month == 0) return ""
+        year = parts[2].toInt()
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    if (i == str.length) return ""
 
-    i++
-    while (i < str.length && str[i] != '.') {
-        if (!(str[i] >= '0' && str[i] <= '9')) return ""
-        num2 = num2 * 10 + str[i].toInt() - 48
-        i++
+    if (day > daysInMonth(month, year)) return ""
+    return String.format("%02d.%02d.%d", day, month, year)
+}
+
+/**
+ * Средняя (4 балла)
+ *
+ * Дата представлена строкой вида "15.07.2016".
+ * Перевести её в строковый формат вида "15 июля 2016".
+ * При неверном формате входной строки вернуть пустую строку
+ *
+ * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
+ * входными данными.
+ */
+fun dateDigitToStr(digital: String): String {
+    val mounths = listOf(
+        "января",
+        "февраля",
+        "марта",
+        "апреля",
+        "мая",
+        "июня",
+        "июля",
+        "августа",
+        "сентября",
+        "октября",
+        "ноября",
+        "декабря"
+    )
+    val day: Int
+    val month: Int
+    val year: Int
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+
+    try {
+        day = parts[0].toInt()
+        month = parts[1].toInt()
+        year = parts[2].toInt()
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    if (i == str.length) return ""
-    if (!(num2 > 0 && num2 <= 12)) return ""
 
-    i++
-    while (i < str.length) {
-        if (!(str[i] >= '0' && str[i] <= '9')) return ""
-        num3 = num3 * 10 + str[i].toInt() - 48
-        num3_str += str[i]
-        i++
-    }
-    if (num3_str == "") return ""
-    if (daysInMonth(num2, num3) < num1) return ""
-
-    num2_str = str_array[num2]
-    if (num1 < 10) num1_str = "" + num1_str[1]
-    return_string = num1_str + " " + num2_str + " " + num3_str
-
-    return return_string
+    if (month < 1) return ""
+    if (day > daysInMonth(month, year)) return ""
+    return String.format("%d %s %d", day, mounths[month - 1], year)
 }
 
 /**
@@ -240,8 +190,8 @@ fun bestLongJump(jumps: String): Int {
     var num = 0
     var flag = false
     var flag2 = false
-    var number_sting = "0123456789"
-    var allow_string = "0123456789-% "
+    val number_sting = "0123456789"
+    val allow_string = "0123456789-% "
     while (index < jumps.length) {
         i = 0
         while (i < number_sting.length) {

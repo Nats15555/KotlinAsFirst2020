@@ -198,7 +198,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var f = true
     var retNull = true
     for ((name, item) in stuff) {
-        var (pairName, pairCost) = item
+        val (pairName, pairCost) = item
         if (f && pairName == kind) {
             min = pairCost
             f = false

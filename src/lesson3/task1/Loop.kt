@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -201,6 +202,16 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+fun digitCapacity(n: Int): Int {
+    var num = n
+    var i = 0
+    while (num > 0) {
+        ++i
+        num /= 10
+    }
+    return i
+}
+
 fun squareSequenceDigit(n: Int): Int {
     if (n == 1) return 1
     var sqrBuff = 0
@@ -208,7 +219,7 @@ fun squareSequenceDigit(n: Int): Int {
     var pointer = 1
     while (pointer < n) {
         sqrBuff = sqr * sqr
-        pointer += "$sqrBuff".length
+        pointer += digitCapacity(sqrBuff)
         sqr++
     }
     var i = 0
@@ -229,16 +240,31 @@ fun squareSequenceDigit(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+fun tenPow(n: Int): Int {
+    if (n == 0) return 1
+    var i = n
+    var ten = 1
+    while (i > 0) {
+        ten *= 10
+        i--
+    }
+    return ten
+}
+
 fun fibSequenceDigit(n: Int): Int {
+    if (n == 1) return 1
     var fib1 = 1
     var fib2 = 1
     var fibSum = 0
-    var fibStr = "11"
-    while (fibStr.length < n) {
+    var digit = 2
+    while (digit < n) {
         fibSum = fib1 + fib2
         fib1 = fib2
         fib2 = fibSum
-        fibStr += "$fibSum"
+        digit += digitCapacity(fib2)
     }
-    return fibStr[n - 1].toInt() - 48
+
+    fib2 %= tenPow(digit - (n - 1))
+    fib2 /= tenPow(digit - (n - 1) - 1)
+    return fib2
 }
