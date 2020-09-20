@@ -2,6 +2,7 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
 import kotlinx.html.attributes.stringSetDecode
 
 // Урок 6: разбор строк, исключения
@@ -76,23 +77,16 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun daysInMonth(month: Int, year: Int): Int {
-    if (year % 4 == 0 && month == 2) {
-        if (year % 100 != 0) return 29
-        if (year % 400 == 0) return 29
-    }
-    return 28 + (month + month / 8) % 2 + 2 % month + 1 / month * 2
-}
 
 fun dateStrToDigit(str: String): String {
-    var return_string = ""
-    var num1_str = ""
-    var num2_str = ""
-    var num3_str = ""
+    var returnString = ""
+    var num1Str = ""
+    var num2Str = ""
+    var num3Str = ""
     var num1 = 0
     var num3 = 0
     var i = 0
-    var str_array: Array<String> = arrayOf(
+    var strArray: Array<String> = arrayOf(
         "",
         "января",
         "февраля",
@@ -111,14 +105,14 @@ fun dateStrToDigit(str: String): String {
     while (i < str.length && str[i] != ' ') {
         if (!(str[i] >= '0' && str[i] <= '9')) return ""
         num1 = num1 * 10 + str[i].toInt() - 48
-        num1_str += str[i]
+        num1Str += str[i]
         i++
     }
     if (i == str.length) return ""
 
     i++
     while (i < str.length && str[i] != ' ') {
-        num2_str += str[i]
+        num2Str += str[i]
         i++
     }
     if (i == str.length) return ""
@@ -127,21 +121,21 @@ fun dateStrToDigit(str: String): String {
     while (i < str.length) {
         if (!(str[i] >= '0' && str[i] <= '9')) return ""
         num3 = num3 * 10 + str[i].toInt() - 48
-        num3_str += str[i]
+        num3Str += str[i]
         i++
     }
 
     i = 0
-    while (i < 13 && (num2_str != str_array[i])) i++
+    while (i < 13 && (num2Str != strArray[i])) i++
     if (i == 13) return ""
     if (daysInMonth(i, num3) < num1) return ""
 
-    num2_str = "$i"
-    if (num2_str.length < 2) num2_str = '0' + num2_str
-    if (num1_str.length < 2) num1_str = '0' + num1_str
-    return_string = num1_str + '.' + num2_str + '.' + num3_str
+    num2Str = "$i"
+    if (num2Str.length < 2) num2Str = '0' + num2Str
+    if (num1Str.length < 2) num1Str = '0' + num1Str
+    returnString = num1Str + '.' + num2Str + '.' + num3Str
 
-    return return_string
+    return returnString
 }
 
 /**

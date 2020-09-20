@@ -39,7 +39,7 @@ fun biRoots(a: Double, b: Double, c: Double): List<Double> {
     }
     val d = discriminant(a, b, c)
     if (d < 0.0) return listOf()
-    if (d == 0.0) return sqRoots(-b / (2 * a))
+    else if (d == 0.0) return sqRoots(-b / (2 * a))
     val y1 = (-b + sqrt(d)) / (2 * a)
     val y2 = (-b - sqrt(d)) / (2 * a)
     return sqRoots(y1) + sqRoots(y2)
@@ -242,74 +242,74 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C.
  */
 fun roman(n: Int): String {
-    var str_array1: Array<String> = arrayOf("", "I", "IV", "V", "IX")
-    var str_array2: Array<String> = arrayOf("", "X", "XL", "L", "XC")
-    var str_array3: Array<String> = arrayOf("", "C", "CD", "D", "CM")
-    var str_array4: Array<String> =
+    val strArray1 = arrayOf("", "I", "IV", "V", "IX")
+    val strArray2  = arrayOf("", "X", "XL", "L", "XC")
+    val strArray3 = arrayOf("", "C", "CD", "D", "CM")
+    val strArray4 =
         arrayOf("", "M", "MM", "MMM", "MMMM", "MMMMM", "MMMMMM", "MMMMMMM", "MMMMMMMM", "MMMMMMMMM")
     var i = n
     var flag = 1 // 4=1000 3=100 2=10 1=1
-    var roman_n = ""
+    var roman = ""
     var s = 0
     while (i > 0) {
         s = i % 10
         if (flag == 1) {
             when {
-                s == 9 -> roman_n = str_array1[4]
-                s == 8 -> roman_n = str_array1[3] + str_array1[1] + str_array1[1] + str_array1[1]
-                s == 7 -> roman_n = str_array1[3] + str_array1[1] + str_array1[1]
-                s == 6 -> roman_n = str_array1[3] + str_array1[1]
-                s == 5 -> roman_n = str_array1[3]
-                s == 4 -> roman_n = str_array1[2]
-                s == 3 -> roman_n = str_array1[1] + str_array1[1] + str_array1[1]
-                s == 2 -> roman_n = str_array1[1] + str_array1[1]
-                s == 1 -> roman_n = str_array1[1]
+                s == 9 -> roman = strArray1[4]
+                s == 8 -> roman = strArray1[3] + strArray1[1] + strArray1[1] + strArray1[1]
+                s == 7 -> roman = strArray1[3] + strArray1[1] + strArray1[1]
+                s == 6 -> roman = strArray1[3] + strArray1[1]
+                s == 5 -> roman = strArray1[3]
+                s == 4 -> roman = strArray1[2]
+                s == 3 -> roman = strArray1[1] + strArray1[1] + strArray1[1]
+                s == 2 -> roman = strArray1[1] + strArray1[1]
+                s == 1 -> roman = strArray1[1]
             }
         }
         if (flag == 2) {
             when {
-                s == 9 -> roman_n = str_array2[4] + roman_n
-                s == 8 -> roman_n = str_array2[3] + str_array2[1] + str_array2[1] + str_array2[1] + roman_n
-                s == 7 -> roman_n = str_array2[3] + str_array2[1] + str_array2[1] + roman_n
-                s == 6 -> roman_n = str_array2[3] + str_array2[1] + roman_n
-                s == 5 -> roman_n = str_array2[3] + roman_n
-                s == 4 -> roman_n = str_array2[2] + roman_n
-                s == 3 -> roman_n = str_array2[1] + str_array2[1] + str_array2[1] + roman_n
-                s == 2 -> roman_n = str_array2[1] + str_array2[1] + roman_n
-                s == 1 -> roman_n = str_array2[1] + roman_n
+                s == 9 -> roman = strArray2[4] + roman
+                s == 8 -> roman = strArray2[3] + strArray2[1] + strArray2[1] + strArray2[1] + roman
+                s == 7 -> roman = strArray2[3] + strArray2[1] + strArray2[1] + roman
+                s == 6 -> roman = strArray2[3] + strArray2[1] + roman
+                s == 5 -> roman = strArray2[3] + roman
+                s == 4 -> roman = strArray2[2] + roman
+                s == 3 -> roman = strArray2[1] + strArray2[1] + strArray2[1] + roman
+                s == 2 -> roman = strArray2[1] + strArray2[1] + roman
+                s == 1 -> roman = strArray2[1] + roman
             }
         }
         if (flag == 3) {
             when {
-                s == 9 -> roman_n = str_array3[4] + roman_n
-                s == 8 -> roman_n = str_array3[3] + str_array3[1] + str_array3[1] + str_array3[1] + roman_n
-                s == 7 -> roman_n = str_array3[3] + str_array3[1] + str_array3[1] + roman_n
-                s == 6 -> roman_n = str_array3[3] + str_array3[1] + roman_n
-                s == 5 -> roman_n = str_array3[3] + roman_n
-                s == 4 -> roman_n = str_array3[2] + roman_n
-                s == 3 -> roman_n = str_array3[1] + str_array3[1] + str_array3[1] + roman_n
-                s == 2 -> roman_n = str_array3[1] + str_array3[1] + roman_n
-                s == 1 -> roman_n = str_array3[1] + roman_n
+                s == 9 -> roman = strArray3[4] + roman
+                s == 8 -> roman = strArray3[3] + strArray3[1] + strArray3[1] + strArray3[1] + roman
+                s == 7 -> roman = strArray3[3] + strArray3[1] + strArray3[1] + roman
+                s == 6 -> roman = strArray3[3] + strArray3[1] + roman
+                s == 5 -> roman = strArray3[3] + roman
+                s == 4 -> roman = strArray3[2] + roman
+                s == 3 -> roman = strArray3[1] + strArray3[1] + strArray3[1] + roman
+                s == 2 -> roman = strArray3[1] + strArray3[1] + roman
+                s == 1 -> roman = strArray3[1] + roman
             }
         }
         if (flag == 4) {
             when {
-                s == 9 -> roman_n = str_array4[9] + roman_n
-                s == 8 -> roman_n = str_array4[8] + roman_n
-                s == 7 -> roman_n = str_array4[7] + roman_n
-                s == 6 -> roman_n = str_array4[6] + roman_n
-                s == 5 -> roman_n = str_array4[5] + roman_n
-                s == 4 -> roman_n = str_array4[4] + roman_n
-                s == 3 -> roman_n = str_array4[3] + roman_n
-                s == 2 -> roman_n = str_array4[2] + roman_n
-                s == 1 -> roman_n = str_array4[1] + roman_n
+                s == 9 -> roman = strArray4[9] + roman
+                s == 8 -> roman = strArray4[8] + roman
+                s == 7 -> roman = strArray4[7] + roman
+                s == 6 -> roman = strArray4[6] + roman
+                s == 5 -> roman = strArray4[5] + roman
+                s == 4 -> roman = strArray4[4] + roman
+                s == 3 -> roman = strArray4[3] + roman
+                s == 2 -> roman = strArray4[2] + roman
+                s == 1 -> roman = strArray4[1] + roman
             }
         }
 
         flag++
         i /= 10
     }
-    return roman_n
+    return roman
 }
 
 /**
@@ -321,23 +321,23 @@ fun roman(n: Int): String {
  */
 fun russian(n: Int): String {
     var i = n
-    var str_buf = ""
+    var strBuf = ""
 
-    var str_array1: Array<String> = arrayOf(
+    var strArray1: Array<String> = arrayOf(
         "", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",
         "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать",
         "восемнадцать", "девятнадцать"
     )
-    var str_array2: Array<String> = arrayOf(
+    var strArray2: Array<String> = arrayOf(
         "", "",
         "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто"
     )
-    var str_array3: Array<String> = arrayOf(
+    var strArray3: Array<String> = arrayOf(
         "",
         "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот",
         "девятьсот"
     )
-    var str_array4: Array<String> = arrayOf(
+    var strArray4: Array<String> = arrayOf(
         "тысяч",
         "одна тысяча",
         "две тысячи",
@@ -359,7 +359,7 @@ fun russian(n: Int): String {
         "восемнадцать тысяч",
         "девятнадцать тысяч"
     )
-    var str_array5: Array<String> = arrayOf(
+    var strArray5: Array<String> = arrayOf(
         "миллионов",
         "один миллион",
         "два миллиона",
@@ -382,38 +382,38 @@ fun russian(n: Int): String {
         "девятнадцать миллионов"
     )
 
-    var n_buf = 0
+    var nBuf = 0
     var flag = 0 // 0 = xxx, 1 = xxx.xxx, 2 = xxx.xxx.xxx
     while (i >= 1) {
-        n_buf = i % 1000
+        nBuf = i % 1000
         if (flag == 0) {
-            if (n_buf % 100 < 20) {
-                str_buf = str_array3[n_buf / 100] + " " + str_array1[n_buf % 100]
+            if (nBuf % 100 < 20) {
+                strBuf = strArray3[nBuf / 100] + " " + strArray1[nBuf % 100]
             } else {
-                str_buf = str_array3[n_buf / 100] + " " + str_array2[(n_buf / 10) % 10] + " " + str_array1[n_buf % 10]
+                strBuf = strArray3[nBuf / 100] + " " + strArray2[(nBuf / 10) % 10] + " " + strArray1[nBuf % 10]
             }
             flag = 1
         } else if (flag == 1) {
-            if (n_buf % 100 < 20) {
-                str_buf = str_array3[n_buf / 100] + " " + str_array4[n_buf % 100] + " " + str_buf
+            if (nBuf % 100 < 20) {
+                strBuf = strArray3[nBuf / 100] + " " + strArray4[nBuf % 100] + " " + strBuf
             } else {
-                str_buf =
-                    str_array3[n_buf / 100] + " " + str_array2[(n_buf / 10) % 10] + " " + str_array4[n_buf % 10] +
-                            " " + str_buf
+                strBuf =
+                    strArray3[nBuf / 100] + " " + strArray2[(nBuf / 10) % 10] + " " + strArray4[nBuf % 10] +
+                            " " + strBuf
             }
             flag = 2
         } else if (flag == 2) {
-            if (n_buf % 100 < 20) {
-                str_buf = str_array3[n_buf / 100] + " " + str_array5[n_buf % 100] + " " + str_buf
+            if (nBuf % 100 < 20) {
+                strBuf = strArray3[nBuf / 100] + " " + strArray5[nBuf % 100] + " " + strBuf
             } else {
-                str_buf =
-                    str_array3[n_buf / 100] + " " + str_array2[(n_buf / 10) % 10] + " " + str_array5[n_buf % 10] +
-                            " " + str_buf
+                strBuf =
+                    strArray3[nBuf / 100] + " " + strArray2[(nBuf / 10) % 10] + " " + strArray5[nBuf % 10] +
+                            " " + strBuf
             }
 
         }
 
         i /= 1000
     }
-    return str_buf.trim().replace("  ", " ")
+    return strBuf.trim().replace("  ", " ")
 }

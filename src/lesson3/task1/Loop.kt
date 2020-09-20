@@ -203,21 +203,21 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun squareSequenceDigit(n: Int): Int {
     if (n == 1) return 1
-    var sqr_buff = 0
+    var sqrBuff = 0
     var sqr = 2
     var pointer = 1
     while (pointer < n) {
-        sqr_buff = sqr * sqr
-        pointer += "$sqr_buff".length
+        sqrBuff = sqr * sqr
+        pointer += "$sqrBuff".length
         sqr++
     }
     var i = 0
     while (pointer - n > i) {
-        sqr_buff /= 10
+        sqrBuff /= 10
         i++
     }
 
-    return sqr_buff % 10
+    return sqrBuff % 10
 }
 
 /**
@@ -232,13 +232,13 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var fib1 = 1
     var fib2 = 1
-    var fib_sum = 0
-    var fib_str = "11"
-    while (fib_str.length < n) {
-        fib_sum = fib1 + fib2
+    var fibSum = 0
+    var fibStr = "11"
+    while (fibStr.length < n) {
+        fibSum = fib1 + fib2
         fib1 = fib2
-        fib2 = fib_sum
-        fib_str += "$fib_sum"
+        fib2 = fibSum
+        fibStr += "$fibSum"
     }
-    return fib_str[n - 1].toInt() - 48
+    return fibStr[n - 1].toInt() - 48
 }

@@ -196,20 +196,20 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
     var str = ""
     var min = 1.0
     var f = true
-    var ret_null = true
+    var retNull = true
     for ((name, item) in stuff) {
-        var (pair_name, pair_cost) = item
-        if (f && pair_name == kind) {
-            min = pair_cost
+        var (pairName, pairCost) = item
+        if (f && pairName == kind) {
+            min = pairCost
             f = false
         }
-        if (pair_name == kind && pair_cost <= min) {
-            min = pair_cost
+        if (pairName == kind && pairCost <= min) {
+            min = pairCost
             str = name
-            ret_null = false
+            retNull = false
         }
     }
-    if (ret_null) return null
+    if (retNull) return null
     return str
 }
 
@@ -238,7 +238,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    var map: MutableMap<String, Int> = mutableMapOf()
+    val map = mutableMapOf<String, Int>()
     for (i in list) {
         var count = 0
         for (item in list) {

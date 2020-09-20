@@ -73,8 +73,8 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
 fun ageDescription(age: Int): String {
     val buf = age % 10
     if ((age % 100 > 10 && age % 100 < 20) || (buf == 0) || (buf > 4 && buf < 10)) return "$age лет"
-    if (buf == 1) return "$age год"
-    if (buf == 2 || buf == 3 || buf == 4) return "$age года"
+    else if (buf == 1) return "$age год"
+    else if (buf in 2..4) return "$age года"
     return "bad value"
 }
 
@@ -90,13 +90,13 @@ fun timeForHalfWay(
     t2: Double, v2: Double,
     t3: Double, v3: Double
 ): Double {
-    val half_s = (v1 * t1 + v2 * t2 + v3 * t3) / 2
-    if (half_s == v1 * t1) return t1
-    if (half_s < v1 * t1) return half_s / v1
-    if (half_s > v1 * t1) {
-        if ((v1 * t1 + v2 * t2) == half_s) return t1 + t2
-        if ((v1 * t1 + v2 * t2) > half_s) return (half_s - v1 * t1) / v2 + t1
-        if ((v1 * t1 + v2 * t2) < half_s) return ((half_s - (v1 * t1 + v2 * t2)) / v3) + t1 + t2
+    val halfS = (v1 * t1 + v2 * t2 + v3 * t3) / 2
+    if (halfS == v1 * t1) return t1
+    else if (halfS < v1 * t1) return halfS / v1
+    else if (halfS > v1 * t1) {
+        if ((v1 * t1 + v2 * t2) == halfS) return t1 + t2
+        else if ((v1 * t1 + v2 * t2) > halfS) return (halfS - v1 * t1) / v2 + t1
+        else if ((v1 * t1 + v2 * t2) < halfS) return ((halfS - (v1 * t1 + v2 * t2)) / v3) + t1 + t2
     }
     return 1.0
 }
@@ -116,9 +116,9 @@ fun whichRookThreatens(
     rookX2: Int, rookY2: Int
 ): Int {
     if ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) return 3
-    if ((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 || kingY != rookY2)) return 1
-    if ((kingX != rookX1 || kingY != rookY1) && (kingX == rookX2 || kingY == rookY2)) return 2
-    if ((kingX != rookX1 || kingY != rookY1) && (kingX != rookX2 || kingY != rookY2)) return 0
+    else if ((kingX == rookX1 || kingY == rookY1) && (kingX != rookX2 && kingY != rookY2)) return 1
+    else if ((kingX != rookX1 && kingY != rookY1) && (kingX == rookX2 || kingY == rookY2)) return 2
+    else if ((kingX != rookX1 && kingY != rookY1) && (kingX != rookX2 && kingY != rookY2)) return 0
 
     return -1
 }
@@ -139,9 +139,9 @@ fun rookOrBishopThreatens(
     bishopX: Int, bishopY: Int
 ): Int {
     if ((kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 3
-    if ((kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) return 1
-    if ((kingX != rookX || kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 2
-    if ((kingX != rookX || kingY != rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) return 0
+    else if ((kingX == rookX || kingY == rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) return 1
+    else if ((kingX != rookX && kingY != rookY) && (abs(kingX - bishopX) == abs(kingY - bishopY))) return 2
+    else if ((kingX != rookX && kingY != rookY) && (abs(kingX - bishopX) != abs(kingY - bishopY))) return 0
 
     return -1
 }
@@ -160,8 +160,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val cosc = (b.pow(2) + c.pow(2) - (a.pow(2))) / 2.0 * b * c
     if ((a + b) > c && (b + c) > a && (a + c) > b) {
         if (cosa == 0.0 || cosb == 0.0 || cosc == 0.0) return 1
-        if (cosa < 0.0 || cosb < 0.0 || cosc < 0.0) return 2
-        if (cosa > 0.0 || cosb > 0.0 || cosc > 0.0) return 0
+        else if (cosa < 0.0 || cosb < 0.0 || cosc < 0.0) return 2
+        else if (cosa > 0.0 || cosb > 0.0 || cosc > 0.0) return 0
 
 
     }
@@ -178,11 +178,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     if (d < a || b < c) return -1
-    if (a == d || b == c) return 0
-    if (a >= c && d >= b) return b - a
-    if (c >= a && b >= d) return d - c
-    if (c >= a && d >= b) return b - c
-    if (a >= c && b >= d) return d - a
+    else if (a == d || b == c) return 0
+    else if (a >= c && d >= b) return b - a
+    else if (c >= a && b >= d) return d - c
+    else if (c >= a && d >= b) return b - c
+    else if (a >= c && b >= d) return d - a
 
     return -2
 }
