@@ -188,6 +188,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
+
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var str: String? = null
     var min = 1.0
