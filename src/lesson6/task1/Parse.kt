@@ -184,46 +184,26 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    var index = 0
-    var i = 0
-    var max = -1
-    var num = 0
-    var flag = false
-    var flag2 = false
-    var number_sting = "0123456789"
-    var allow_string = "0123456789-% "
-    while (index < jumps.length) {
-        i = 0
-        while (i < number_sting.length) {
-            flag = false
-            if (jumps[index] == number_sting[i]) {
-                num = num * 10 + i
-                flag = true
-                flag2 = true
-                break //exit while
-            }
-            i++
-        }
-        if (!flag) {
-            if (num > max) max = num
-            num = 0
-        }
+    var retValue = -1
+    val CharsArray = listOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+    val allowedArray = listOf('-', ' ', '%')
+    var strNum = ""
 
-        i = 0
-        flag = false
-        while (i < allow_string.length) {
-            if (jumps[index] == allow_string[i]) {
-                flag = true
-                break
+    try {
+        for (i in jumps) {
+            if (i !in CharsArray && i !in allowedArray) return -1
+            if (i in CharsArray) strNum += i
+            else {
+                if (strNum.length > 0) retValue = Math.max(retValue, strNum.toInt())
+                strNum = ""
             }
-            i++
         }
-        if (!flag) return -1
-        index++
+        if (strNum.length > 0) retValue = Math.max(retValue, strNum.toInt())
+    } catch (e: NumberFormatException) {
+        return -1
     }
-    if (num > max) max = num
-    if (!flag2) return -1
-    return max
+
+    return retValue
 }
 
 /**

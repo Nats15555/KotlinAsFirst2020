@@ -139,11 +139,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val l = mutableListOf<String>()
-    for (item in a) if (item in b && !(item in l)) l.add(item)
-    return l
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b.toList()).toMutableList()
 
 /**
  * Средняя (3 балла)
@@ -193,10 +189,9 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var str = ""
+    var str: String? = ""
     var min = 1.0
     var f = true
-    var retNull = true
     for ((name, item) in stuff) {
         val (pairName, pairCost) = item
         if (f && pairName == kind) {
@@ -206,10 +201,8 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
         if (pairName == kind && pairCost <= min) {
             min = pairCost
             str = name
-            retNull = false
         }
     }
-    if (retNull) return null
     return str
 }
 

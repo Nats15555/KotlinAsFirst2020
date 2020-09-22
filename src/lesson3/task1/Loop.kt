@@ -73,7 +73,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var num = n
+    var i = 0
+    while (num > 0) {
+        ++i
+        num /= 10
+    }
+    return i
+}
 
 /**
  * Простая (2 балла)
@@ -202,15 +210,7 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitCapacity(n: Int): Int {
-    var num = n
-    var i = 0
-    while (num > 0) {
-        ++i
-        num /= 10
-    }
-    return i
-}
+
 
 fun squareSequenceDigit(n: Int): Int {
     if (n == 1) return 1
@@ -219,7 +219,7 @@ fun squareSequenceDigit(n: Int): Int {
     var pointer = 1
     while (pointer < n) {
         sqrBuff = sqr * sqr
-        pointer += digitCapacity(sqrBuff)
+        pointer += digitNumber(sqrBuff)
         sqr++
     }
     var i = 0
@@ -261,7 +261,7 @@ fun fibSequenceDigit(n: Int): Int {
         fibSum = fib1 + fib2
         fib1 = fib2
         fib2 = fibSum
-        digit += digitCapacity(fib2)
+        digit += digitNumber(fib2)
     }
     fib2 /= tenPow(digit - n)
     fib2 %= 10
