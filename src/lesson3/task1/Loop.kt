@@ -73,6 +73,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
+
 fun digitNumber(n: Int): Int {
     var num = n
     var i = 0
