@@ -232,16 +232,23 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
+    val elementSet = (list.toSet()).toList()
+
     val map = mutableMapOf<String, Int>()
-    val myList = mutableListOf<String>()
-    for (i in list) {
-        if (i in myList) {
-            val k = map[i]
-            if (k != null) map[i] = k + 1
-            else map[i] = 2
-        } else myList.add(i)
+    var j = 0
+    for (key in list) {
+        if (j < elementSet.size && elementSet[j] == key) {
+            j++
+            continue
+        } else {
+            val k = map[key]
+            if (k != null) map[key] = k + 1
+            else map[key] = 2
+        }
     }
+
     return map
+
 }
 
 /**
