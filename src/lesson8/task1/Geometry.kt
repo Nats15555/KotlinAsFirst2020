@@ -105,6 +105,9 @@ data class Segment(val begin: Point, val end: Point) {
         begin.hashCode() + end.hashCode()
 }
 
+
+
+
 /**
  * Средняя (3 балла)
  *
