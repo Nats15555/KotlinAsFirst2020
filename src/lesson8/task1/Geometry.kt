@@ -112,7 +112,7 @@ data class Segment(val begin: Point, val end: Point) {
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
 fun diameter(vararg points: Point): Segment {
-    var maxBuff = 0.0
+    var maxBuff: Double
     var max = 0.0
     var x1 = 0.0
     var y1 = 0.0
@@ -163,8 +163,8 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point {
-        var x = (cos(angle)*other.b-b*cos(other.angle))/(cos(other.angle)*sin(angle)-cos(angle)*sin(other.angle))
-        var y = (sin(other.angle)*x+other.b)/cos(other.angle)
+        val x = (cos(angle)*other.b-b*cos(other.angle))/(cos(other.angle)*sin(angle)-cos(angle)*sin(other.angle))
+        val y = (sin(other.angle)*x+other.b)/cos(other.angle)
 
         return Point(x , y)
     }
