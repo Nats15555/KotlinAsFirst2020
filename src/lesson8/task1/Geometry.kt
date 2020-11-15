@@ -81,8 +81,8 @@ data class Circle(val center: Point, val radius: Double) {
      */
 
     fun distance(other: Circle): Double =
-        if ((sqrt(sqr(other.center.x - center.x) + sqr(other.center.y - center.y))) <= (radius + other.radius)) 0.0
-        else (sqrt(sqr(other.center.x - center.x) + sqr(other.center.y - center.y))) - (radius + other.radius)
+        if (other.center.distance(center) <= (radius + other.radius)) 0.0
+        else (other.center.distance(center) - (radius + other.radius))
 
 
     /**
@@ -90,8 +90,7 @@ data class Circle(val center: Point, val radius: Double) {
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean =
-        ((p.x - center.x) * (p.x - center.x) + (p.y - center.y) * (p.y - center.y)) <= (radius * radius)
+    fun contains(p: Point): Boolean = p.distance(center) <= radius
 }
 
 /**
@@ -106,33 +105,14 @@ data class Segment(val begin: Point, val end: Point) {
 }
 
 
-
-
 /**
  * Средняя (3 балла)
  *
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment {
-    var maxBuff: Double
-    var max = 0.0
-    var x1 = 0.0
-    var y1 = 0.0
-    var point1 = Point(0.0,0.0)
-    var point2 = Point(0.0,0.0)
-    for ((x, y) in points) {
-        maxBuff = sqrt(sqr(x - x1) + sqr(y - y1))
-        if (maxBuff > max) {
-            max = maxBuff
-            point1=Point(x,y)
-            point2=Point(x1,y1)
-        }
-        x1 = x
-        y1 = y
-    }
-    return Segment(point2, point1)
-}
+fun diameter(vararg points: Point): Segment = TODO()
+
 
 /**
  * Простая (2 балла)
@@ -143,7 +123,7 @@ fun diameter(vararg points: Point): Segment {
 fun circleByDiameter(diameter: Segment): Circle =
     Circle(
         Point(abs(diameter.end.x - diameter.begin.x) / 2, abs(diameter.end.y - diameter.begin.y) / 2),
-        (sqrt(sqr(diameter.end.x - diameter.begin.x) + sqr(diameter.end.y - diameter.begin.y))) / 2
+        (diameter.end.distance(diameter.begin)) / 2
     )
 
 /**
@@ -166,10 +146,11 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point {
-        val x = (cos(angle)*other.b-b*cos(other.angle))/(cos(other.angle)*sin(angle)-cos(angle)*sin(other.angle))
-        val y = (sin(other.angle)*x+other.b)/cos(other.angle)
+        val x =
+            (cos(angle) * other.b - b * cos(other.angle)) / (cos(other.angle) * sin(angle) - cos(angle) * sin(other.angle))
+        val y = (sin(other.angle) * x + other.b) / cos(other.angle)
 
-        return Point(x , y)
+        return Point(x, y)
     }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
