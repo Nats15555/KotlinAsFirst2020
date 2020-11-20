@@ -549,182 +549,194 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var buffDeсlhv = digitNumber(lhv)
     var buffDeсrhv = digitNumber(rhv)
     var buffLhv = lhv
-    arr += " " + lhv.toString() + " | " + rhv.toString()
     when {
         lhv < rhv -> {
+            arr += " " + lhv.toString() + " | " + rhv.toString()
             arr += "-0" + prSpace(3) + "0"
             arr += prUnderline(2)
             arr += " " + lhv
             printFile(arr, outputName)
         }
         lhv == rhv -> {
+            arr += " " + lhv.toString() + " | " + rhv.toString()
             arr += "-" + lhv + prSpace(3) + "1"
             arr += prUnderline(digitNumber(lhv) + 1)
             arr += prSpace(digitNumber(lhv)) + "0"
             printFile(arr, outputName)
         }
         lhv > rhv -> {
-            var i = false
-            var first = true
-            var digit = buffDeсlhv - buffDeсrhv
-            var digitNum = buffLhv / pow(10, digit)
-            while (buffLhv > lhv % rhv) {
-                when {
-                    digitNum > rhv -> {
-                        if (first) {
-                            if (i) {
-                                arr += "0" + digitNum
-                                arr += "-" + (digitNum / rhv) * rhv
+            if ((lhv - (lhv / rhv) * rhv) == lhv % rhv && digitNumber(rhv) - digitNumber(lhv) == -1) {
+                arr += lhv.toString() + " | " + rhv.toString()
+                arr += "-" + rhv + prSpace(3) + "1"
+                arr += prUnderline(digitNumber(rhv) + 1)
+                arr += prSpace(digitNumber(rhv)) + lhv % rhv
+                printFile(arr, outputName)
+            } else {
+                arr += " " + lhv.toString() + " | " + rhv.toString()
+                var i = false
+                var first = true
+                var digit = buffDeсlhv - buffDeсrhv
+                var digitNum = buffLhv / pow(10, digit)
+                while (buffLhv > lhv % rhv) {
+                    when {
+                        digitNum > rhv -> {
+                            if (first) {
+                                if (i) {
+                                    arr += "0" + digitNum
+                                    arr += "-" + (digitNum / rhv) * rhv
+                                    arr += prUnderline(digitNumber(digitNum) + 1)
+                                    buffLhv =
+                                        (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
+                                    i = false
+                                    buffDeсlhv = digitNumber(buffLhv)
+                                    digit = buffDeсlhv - buffDeсrhv
+                                    digitNum = buffLhv / pow(10, digit)
+                                } else {
+                                    arr += "-" + (digitNum / rhv) * rhv
+                                    arr += prUnderline(digitNumber(digitNum) + 1)
+                                    buffLhv =
+                                        (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
+                                    buffDeсlhv = digitNumber(buffLhv)
+                                    digit = buffDeсlhv - buffDeсrhv
+                                    digitNum = buffLhv / pow(10, digit)
+                                    if ((digitNum / rhv) * rhv == digitNum) {
+                                        i = true
+                                    } else {
+                                        i = false
+                                    }
+                                }
+                            } else {
+                                if (i) {
+                                    arr += "0" + digitNum
+                                    arr += "-" + (digitNum / rhv) * rhv
+                                    arr += prUnderline(digitNumber(digitNum) + 1)
+                                    buffLhv =
+                                        (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
+                                    buffDeсlhv = digitNumber(buffLhv)
+                                    digit = buffDeсlhv - buffDeсrhv
+                                    digitNum = buffLhv / pow(10, digit)
+                                    if ((digitNum / rhv) * rhv == digitNum) {
+                                        i = true
+                                    } else {
+                                        i = false
+                                    }
+                                } else {
+
+                                    arr += "" + digitNum
+                                    arr += "-" + (digitNum / rhv) * rhv
+                                    arr += prUnderline(digitNumber(digitNum) + 1)
+                                    buffLhv =
+                                        (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
+                                    buffDeсlhv = digitNumber(buffLhv)
+                                    digit = buffDeсlhv - buffDeсrhv
+                                    digitNum = buffLhv / pow(10, digit)
+                                    if ((digitNum / rhv) * rhv == digitNum) {
+                                        i = true
+                                    } else {
+                                        i = false
+                                    }
+                                }
+                            }
+
+                        }
+                        digitNum == rhv -> {
+                            if (first) {
+                                arr += "-" + digitNum
                                 arr += prUnderline(digitNumber(digitNum) + 1)
-                                buffLhv =
-                                    (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
+                                buffLhv -= digitNum * pow(10, digit)
+                                i = true
+                                buffDeсlhv = digitNumber(buffLhv)
+                                digit = buffDeсlhv - buffDeсrhv
+                                digitNum = buffLhv / pow(10, digit)
+                            } else {
+                                arr += "0" + digitNum
+                                arr += "-" + digitNum
+                                arr += prUnderline(digitNumber(digitNum) + 1)
+                                buffLhv -= digitNum * pow(10, digit)
+                                i = true
+                                buffDeсlhv = digitNumber(buffLhv)
+                                digit = buffDeсlhv - buffDeсrhv
+                                digitNum = buffLhv / pow(10, digit)
+                            }
+                        }
+                        digitNum < rhv -> {
+                            if (!first) {
+                                arr += "0" + buffLhv / (pow(10, digit))
+                                arr += "-0"
+                                arr += prUnderline(digitNumber(2) + 1)
                                 i = false
                                 buffDeсlhv = digitNumber(buffLhv)
+                                buffDeсlhv--
                                 digit = buffDeсlhv - buffDeсrhv
                                 digitNum = buffLhv / pow(10, digit)
                             } else {
-                                arr += "-" + (digitNum / rhv) * rhv
-                                arr += prUnderline(digitNumber(digitNum) + 1)
-                                buffLhv =
-                                    (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
+                                buffDeсlhv--
+                                arr += "-" + ((buffLhv / pow(10, buffDeсlhv - buffDeсrhv)) / rhv) * rhv
+                                arr += prUnderline(
+                                    digitNumber(
+                                        ((buffLhv / pow(
+                                            10,
+                                            buffDeсlhv - buffDeсrhv
+                                        )) / rhv) * rhv
+                                    ) + 1
+                                )
+                                buffLhv = ((buffLhv / pow(10, buffDeсlhv - buffDeсrhv)) - ((buffLhv / pow(
+                                    10, buffDeсlhv - buffDeсrhv
+                                )) / rhv) * rhv) * pow(10, buffDeсlhv - buffDeсrhv) + buffLhv % pow(
+                                    10,
+                                    buffDeсlhv - buffDeсrhv
+                                )
                                 buffDeсlhv = digitNumber(buffLhv)
                                 digit = buffDeсlhv - buffDeсrhv
                                 digitNum = buffLhv / pow(10, digit)
-                                if ((digitNum / rhv) * rhv == digitNum) {
-                                    i = true
-                                } else {
-                                    i = false
-                                }
-                            }
-                        } else {
-                            if (i) {
-                                arr += "0" + digitNum
-                                arr += "-" + (digitNum / rhv) * rhv
-                                arr += prUnderline(digitNumber(digitNum) + 1)
-                                buffLhv =
-                                    (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
-                                buffDeсlhv = digitNumber(buffLhv)
-                                digit = buffDeсlhv - buffDeсrhv
-                                digitNum = buffLhv / pow(10, digit)
-                                if ((digitNum / rhv) * rhv == digitNum) {
-                                    i = true
-                                } else {
-                                    i = false
-                                }
-                            } else {
-
-                                arr += "" + digitNum
-                                arr += "-" + (digitNum / rhv) * rhv
-                                arr += prUnderline(digitNumber(digitNum) + 1)
-                                buffLhv =
-                                    (digitNum - (digitNum / rhv) * rhv) * pow(10, digit) + buffLhv % pow(10, digit)
-                                buffDeсlhv = digitNumber(buffLhv)
-                                digit = buffDeсlhv - buffDeсrhv
-                                digitNum = buffLhv / pow(10, digit)
-                                if ((digitNum / rhv) * rhv == digitNum) {
-                                    i = true
-                                } else {
-                                    i = false
-                                }
                             }
                         }
 
                     }
-                    digitNum == rhv -> {
-                        if (first) {
-                            arr += "-" + digitNum
-                            arr += prUnderline(digitNumber(digitNum) + 1)
-                            buffLhv -= digitNum * pow(10, digit)
-                            i = true
-                            buffDeсlhv = digitNumber(buffLhv)
-                            digit = buffDeсlhv - buffDeсrhv
-                            digitNum = buffLhv / pow(10, digit)
-                        } else {
-                            arr += "0" + digitNum
-                            arr += "-" + digitNum
-                            arr += prUnderline(digitNumber(digitNum) + 1)
-                            buffLhv -= digitNum * pow(10, digit)
-                            i = true
-                            buffDeсlhv = digitNumber(buffLhv)
-                            digit = buffDeсlhv - buffDeсrhv
-                            digitNum = buffLhv / pow(10, digit)
+                    first = false
+                }
+                var m = 0
+                var g = 0
+                for (string in arr) {
+                    when {
+                        Regex("""(-)+[0]""").find(string) != null && m > 2 -> {
+                            arr[m] = prSpace(arr[m - 1].length - 2) + string
+                            g = arr[m - 1].length - 2
+                        }
+                        Regex("""(0)+[012345689]""").find(string) != null -> {
+                            arr[m] = prSpace(arr[m - 1].length - 1) + string
+                            g = arr[m - 1].length - 1
+                        }
+                        Regex(""".-""").find(string) != null && m > 2 && Regex("""(-)+[0]""").find(arr[m - 1]) != null -> {
+                            arr[m] = prSpace(arr[m - 1].length - 3) + string
+                            g = arr[m - 1].length - 3
+                        }
+                        Regex(""".-""").find(string) != null && m > 2 && Regex("""(-)+[0123456789]""").find(arr[m - 1]) != null -> {
+                            arr[m] = prSpace(arr[m - 1].length - arr[m].length) + string
+                            g = arr[m - 1].length - g + 2
+                        }
+                        Regex(""".-""").find(string) != null && m > 2 -> {
+                            arr[m] = prSpace(arr[m - 1].length - g - 1) + string
+                            g = arr[m - 1].length - 1
+                        }
+                        Regex("""(-)+[0123456789]""").find(string) != null && m > 2 && Regex("""(0)+[0123456789]""").find(
+                            arr[m - 1]
+                        ) != null -> {
+                            arr[m] = prSpace(g) + string
+                        }
+                        Regex("""(-)+[0123456789]""").find(string) != null && m > 2 -> {
+                            arr[m] = prSpace(g - 1) + string
+                        }
+                        m > 2 -> {
+                            arr[m] = prSpace(g) + string
                         }
                     }
-                    digitNum < rhv -> {
-                        if (!first) {
-                            arr += "0" + buffLhv / (pow(10, digit))
-                            arr += "-0"
-                            arr += prUnderline(digitNumber(2) + 1)
-                            i = false
-                            buffDeсlhv = digitNumber(buffLhv)
-                            buffDeсlhv--
-                            digit = buffDeсlhv - buffDeсrhv
-                            digitNum = buffLhv / pow(10, digit)
-                        } else {
-                            buffDeсlhv--
-                            arr += "-" + ((buffLhv / pow(10, buffDeсlhv - buffDeсrhv)) / rhv) * rhv
-                            arr += prUnderline(
-                                digitNumber(
-                                    ((buffLhv / pow(
-                                        10,
-                                        buffDeсlhv - buffDeсrhv
-                                    )) / rhv) * rhv
-                                ) + 1
-                            )
-                            buffLhv = ((buffLhv / pow(10, buffDeсlhv - buffDeсrhv)) - ((buffLhv / pow(
-                                10, buffDeсlhv - buffDeсrhv
-                            )) / rhv) * rhv) * pow(10, buffDeсlhv - buffDeсrhv) + buffLhv % pow(
-                                10,
-                                buffDeсlhv - buffDeсrhv
-                            )
-                            buffDeсlhv = digitNumber(buffLhv)
-                            digit = buffDeсlhv - buffDeсrhv
-                            digitNum = buffLhv / pow(10, digit)
-                        }
-                    }
-
+                    m++
                 }
-                first = false
+                arr[1] += prSpace((arr[0].length - arr[1].length - digitNumber(rhv))) + (lhv / rhv).toString()
+                arr += prSpace(arr[arr.size - 1].length - 1) + (lhv % rhv).toString()
+                printFile(arr, outputName)
             }
-            var m = 0
-            var g = 0
-            for (string in arr) {
-                when {
-                    Regex("""(-)+[0]""").find(string) != null && m > 2 -> {
-                        arr[m] = prSpace(arr[m - 1].length - 2) + string
-                        g=arr[m - 1].length - 2
-                    }
-                    Regex("""(0)+[012345689]""").find(string) != null -> {
-                        arr[m] = prSpace(arr[m - 1].length - 1) + string
-                        g=arr[m - 1].length - 1
-                    }
-                    Regex(""".-""").find(string) != null && m > 2 && Regex("""(-)+[0]""").find(arr[m - 1]) != null -> {
-                        arr[m] = prSpace(arr[m - 1].length - 3) + string
-                        g = arr[m - 1].length - 3
-                    }
-                    Regex(""".-""").find(string) != null && m > 2 && Regex("""(-)+[0123456789]""").find(arr[m - 1]) != null -> {
-                        arr[m] = prSpace(arr[m - 1].length - arr[m].length) + string
-                        g = arr[m - 1].length - g+2
-                    }
-                    Regex(""".-""").find(string) != null && m > 2 -> {
-                        arr[m]= prSpace(arr[m-1].length-g-1)+string
-                        g=arr[m - 1].length - 1
-                    }
-                    Regex("""(-)+[0123456789]""").find(string) != null && m > 2 && Regex("""(0)+[0123456789]""").find(arr[m-1]) != null-> {
-                        arr[m]= prSpace(g) +string
-                    }
-                    Regex("""(-)+[0123456789]""").find(string) != null && m > 2-> {
-                        arr[m]= prSpace(g-1) +string
-                    }
-                    m > 2 -> {
-                        arr[m]= prSpace(g) +string
-                    }
-                }
-                m++
-            }
-            arr[1] += prSpace((arr[0].length - arr[1].length - digitNumber(rhv))) + (lhv / rhv).toString()
-            arr += prSpace(arr[arr.size - 1].length - 1) + (lhv % rhv).toString()
-            printFile(arr, outputName)
         }
     }
 }
