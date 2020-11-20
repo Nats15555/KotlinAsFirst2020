@@ -565,7 +565,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             printFile(arr, outputName)
         }
         lhv > rhv -> {
-            if ((lhv - (lhv / rhv) * rhv) == lhv % rhv && digitNumber(rhv) - digitNumber(lhv) == -1) {
+            if ((lhv - (lhv / rhv) * rhv) == lhv % rhv && digitNumber(rhv) - digitNumber(lhv) == -1 && lhv % rhv != 0) {
                 arr += lhv.toString() + " | " + rhv.toString()
                 arr += "-" + rhv + prSpace(3) + "1"
                 arr += prUnderline(digitNumber(rhv) + 1)
