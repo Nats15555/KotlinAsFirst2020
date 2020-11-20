@@ -565,12 +565,32 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             printFile(arr, outputName)
         }
         lhv > rhv -> {
-            if ((lhv - (lhv / rhv) * rhv) == lhv % rhv && digitNumber(rhv) - digitNumber(lhv) == -1 && lhv % rhv != 0) {
-                arr += lhv.toString() + " | " + rhv.toString()
-                arr += "-" + rhv + prSpace(3) + "1"
-                arr += prUnderline(digitNumber(rhv) + 1)
-                arr += prSpace(digitNumber(rhv)) + lhv % rhv
-                printFile(arr, outputName)
+            if ((lhv - (lhv / rhv) * rhv) == lhv % rhv && (digitNumber(rhv) - digitNumber(lhv) == -1)
+                && (lhv % rhv != 0)
+            ) {
+                if (lhv / rhv > 1) {
+                    arr += " " + lhv.toString() + " | " + rhv.toString()
+                    arr += "-" + (lhv / rhv) * rhv
+                    arr += prUnderline(digitNumber(lhv) + 1)
+                    arr += prSpace(digitNumber(lhv)) + lhv % rhv
+                    arr[1] += prSpace(arr[0].length - digitNumber(lhv)- digitNumber(rhv)-1) + lhv / rhv
+                    printFile(arr, outputName)
+                } else {
+                    if(digitNumber((lhv/rhv)*rhv) < digitNumber(lhv)){
+                        arr += lhv.toString() + " | " + rhv.toString()
+                    }else{
+                        arr += " " + lhv.toString() + " | " + rhv.toString()
+                    }
+                    arr += "-" + rhv
+                    arr += prUnderline(digitNumber(rhv) + 1)
+                    arr += prSpace(digitNumber(rhv)) + lhv % rhv
+                    if(digitNumber((lhv/rhv)*rhv) < digitNumber(lhv)){
+                        arr[1] += prSpace(arr[0].length - digitNumber(lhv)- digitNumber(rhv)) + lhv / rhv
+                    }else{
+                        arr[1] += prSpace(arr[0].length - digitNumber(lhv)- digitNumber(rhv)-1) + lhv / rhv
+                    }
+                    printFile(arr, outputName)
+                }
             } else {
                 arr += " " + lhv.toString() + " | " + rhv.toString()
                 var i = false
