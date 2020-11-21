@@ -23,9 +23,9 @@ data class Square(val column: Int, val row: Int) {
      * Для клетки не в пределах доски вернуть пустую строку
      */
     fun notation(): String =
-        if (inside()) (column+96).toChar() + row.toString()
+        if (inside()) (column + 96).toChar() + row.toString()
         else ""
-
+}
 /**
  * Простая (2 балла)
  *
