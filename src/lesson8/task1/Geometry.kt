@@ -3,7 +3,10 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 // Урок 8: простые классы
 // Максимальное количество баллов = 40 (без очень трудных задач = 11)
@@ -147,7 +150,8 @@ class Line private constructor(val b: Double, val angle: Double) {
      */
     fun crossPoint(other: Line): Point {
         val x =
-            (cos(angle) * other.b - b * cos(other.angle)) / (cos(other.angle) * sin(angle) - cos(angle) * sin(other.angle))
+            (cos(angle) * other.b - b * cos(other.angle)) /
+                    (cos(other.angle) * sin(angle) - cos(angle) * sin(other.angle))
         val y = (sin(other.angle) * x + other.b) / cos(other.angle)
 
         return Point(x, y)
