@@ -23,9 +23,10 @@ data class Square(val column: Int, val row: Int) {
      * Для клетки не в пределах доски вернуть пустую строку
      */
     fun notation(): String =
-        if (inside()) ('`'+column ) + row.toString()
+        if (inside()) ('`' + column) + row.toString()
         else ""
 }
+
 /**
  * Простая (2 балла)
  *
@@ -60,11 +61,16 @@ fun square(notation: String): Square =
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int =
-
-    if ((start.column == end.column && start.row!=end.row) || (start.column != end.column && start.row==end.row)) 1
-    else if(start.column == end.column && start.row==end.row) 0
-    else 2
+fun rookMoveNumber(start: Square, end: Square): Int {
+    when {
+        start.column == null || start.row == null || end.column == null || end.row == null ->
+            throw IllegalArgumentException()
+        (start.column == end.column && start.row != end.row)
+                || (start.column != end.column && start.row == end.row) -> 1
+        (start.column == end.column && start.row == end.row) -> 0
+        else -> 2
+    }
+}
 
 
 /**
