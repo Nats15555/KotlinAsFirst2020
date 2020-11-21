@@ -663,5 +663,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 
-
+fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
+    TODO()
+}
 

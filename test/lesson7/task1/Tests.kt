@@ -63,7 +63,6 @@ Basic, Ruby, Swift.
         assertFileContent(
             "temp.txt",
             """Задачи _надо_ решать правильно,
-
 и не надо при этом никуда торопиться___
             """.trimIndent()
         )
@@ -371,5 +370,69 @@ Basic, Ruby, Swift.
              """
         )
 
+    }
+
+    @Test
+    @Tag("25")
+    fun printDivisionProcess() {
+
+        fun test(lhv: Int, rhv: Int, res: String) {
+            printDivisionProcess(lhv, rhv, "temp.txt")
+            assertFileContent("temp.txt", res.trimIndent())
+            File("temp.txt").delete()
+        }
+
+        test(
+            19935,
+            22,
+            """
+              19935 | 22
+             -198     906
+             ----
+                13
+                -0
+                --
+                135
+               -132
+               ----
+                  3
+             """
+        )
+
+        test(
+            2,
+            20,
+            """
+              2 | 20
+             -0   0
+             --
+              2
+             """
+        )
+
+        test(
+            99999,
+            1,
+            """
+              99999 | 1
+             -9       99999
+             --
+              09
+              -9
+              --
+               09
+               -9
+               --
+                09
+                -9
+                --
+                 09
+                 -9
+                 --
+                  0
+             """
+        )
+
+        File("temp.txt").delete()
     }
 }

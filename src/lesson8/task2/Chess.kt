@@ -34,7 +34,6 @@ data class Square(val column: Int, val row: Int) {
  */
 fun square(notation: String): Square = TODO()
 
-
 /**
  * Простая (2 балла)
  *
@@ -58,8 +57,7 @@ fun square(notation: String): Square = TODO()
  * Пример: rookMoveNumber(Square(3, 1), Square(6, 3)) = 2
  * Ладья может пройти через клетку (3, 3) или через клетку (6, 1) к клетке (6, 3).
  */
-fun rookMoveNumber(start: Square, end: Square): Int =TODO()
-
+fun rookMoveNumber(start: Square, end: Square): Int = TODO()
 
 /**
  * Средняя (3 балла)
@@ -206,4 +204,3 @@ fun knightMoveNumber(start: Square, end: Square): Int = TODO()
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
-
