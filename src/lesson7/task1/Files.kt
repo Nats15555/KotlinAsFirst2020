@@ -352,9 +352,7 @@ fun equalsInStarHtml(string: String): String {
     var i = 0
     var buffOne = true
     var buffTwo = true
-    var m = '*'
     while (i < str.length) {
-        m = str[i]
         when {
             (str[i] == '*' && str[i + 1] == '*' && !buffTwo) -> {
                 str = str.replaceFirst("**", "</b>")
