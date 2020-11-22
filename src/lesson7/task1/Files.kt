@@ -438,13 +438,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 f = false
             }
             line.isNotEmpty() -> {
-                string += equalsInStarHtml(line)
+                string += line.replaceFirst("\t","")
                 f = true
             }
         }
     }
     val star = "$string</p></body></html>"
-    writer.write(waveHtml(star))
+    writer.write(equalsInStarHtml(waveHtml(star)))
     writer.close()
     return
 }
