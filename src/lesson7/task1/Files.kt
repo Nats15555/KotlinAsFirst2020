@@ -337,8 +337,130 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 
+fun waveHtml(string: String): String {
+    var str = string
+    while (str.contains("~~")) {
+        str = str.replaceFirst("~~", "<s>")
+        str = str.replaceFirst("~~", "</s>")
+    }
+    return str
+}
+
+fun equalsInStarHtml(string: String): String {
+    var splitStringStar = Regex("""[^*]""").split(string).toMutableList()
+    var splitStringNotStar = Regex("""(?:\*)+""").split(string).toMutableList()
+    splitStringStar.removeAll { it == "" }
+    splitStringNotStar.removeAll { it == "" }
+    var buffOneStar = true
+    var buffTwoStar = true
+    var str = ""
+    var i = splitStringNotStar.size - 1
+    if (splitStringStar.size - splitStringNotStar.size < 0) {
+        str = splitStringNotStar[0]
+        splitStringNotStar.removeAt(0)
+    } else {
+        str = ""
+    }
+    var m = 0
+    while (i > 0) {
+        when {
+            splitStringStar[m].contains("******") && !buffOneStar && !buffTwoStar -> {
+                if (splitStringStar[m - 1].contains("**")) {
+                    str += "</b></i><b><i>" + splitStringNotStar[m]
+                    buffOneStar = false
+                    buffTwoStar = false
+                } else {
+                    str += "</i></b><b><i>" + splitStringNotStar[m]
+                    buffOneStar = false
+                    buffTwoStar = false
+                }
+            }
+            splitStringStar[m].contains("*****") && !buffTwoStar -> {
+                str += "</b><b><i>" + splitStringNotStar[m]
+                buffTwoStar = false
+            }
+            splitStringStar[m].contains("****") && !buffOneStar -> {
+                str += "</i><b><i>" + splitStringNotStar[m]
+                buffOneStar = false
+            }
+            splitStringStar[m].contains("***") && buffOneStar && buffTwoStar -> {
+                str += "<b><i>" + splitStringNotStar[m]
+                buffOneStar = false
+                buffTwoStar = false
+            }
+            splitStringStar[m].contains("***") && !buffOneStar && !buffTwoStar -> {
+                if (splitStringStar[m - 1].contains("***")) {
+                    str += "</i></b>" + splitStringNotStar[m]
+                    buffOneStar = true
+                    buffTwoStar = true
+                } else if (splitStringStar[m - 1].contains("**")) {
+                    str += "</b></i>" + splitStringNotStar[m]
+                    buffOneStar = true
+                    buffTwoStar = true
+                } else {
+                    str += "</i></b>" + splitStringNotStar[m]
+                    buffOneStar = true
+                    buffTwoStar = true
+                }
+            }
+            splitStringStar[m].contains("**") && !buffTwoStar -> {
+                str += "</b>" + splitStringNotStar[m]
+                buffTwoStar = true
+            }
+            splitStringStar[m].contains("**") && buffTwoStar -> {
+                str += "<b>" + splitStringNotStar[m]
+                buffTwoStar = false
+            }
+            splitStringStar[m].contains("*") && !buffOneStar -> {
+                str += "</i>" + splitStringNotStar[m]
+                buffOneStar = true
+            }
+            splitStringStar[m].contains("*") && buffOneStar -> {
+                str += "<i>" + splitStringNotStar[m]
+                buffOneStar = false
+            }
+        }
+        i--
+        m++
+    }
+    return str
+}
+
+
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var f = false
+    writer.newLine()
+    writer.write("<html>")
+    writer.newLine()
+    writer.write("<body>")
+    writer.newLine()
+    writer.write("<p>")
+    for (line in File(inputName).readLines()) {
+        when {
+            line.isEmpty() && f == true -> {
+                writer.newLine()
+                writer.write("</p>")
+                writer.newLine()
+                writer.write("<p>")
+                f = false
+            }
+            line.isNotEmpty() -> {
+                writer.newLine()
+                var star = equalsInStarHtml(line)
+                writer.write(waveHtml(star))
+                f = true
+            }
+        }
+    }
+    writer.newLine()
+    writer.write("</p>")
+    writer.newLine()
+    writer.write("</body>")
+    writer.newLine()
+    writer.write("</html>")
+    writer.close()
+    return
 }
 
 /**
