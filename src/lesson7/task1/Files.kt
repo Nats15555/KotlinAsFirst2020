@@ -401,11 +401,11 @@ fun equalsInStarHtml(string: String, list: List<String>): String {
                     }
                     splitStringStar[m].length - 3 == 3 -> {
                         if (splitStringStar[m - 1].length >= 2) {
-                            listHtml += "</i></b><b><i>"
+                            listHtml += "</b></i><b><i>"
                             buffOneStar = false
                             buffTwoStar = false
                         } else {
-                            listHtml += "</b></i><b><i>"
+                            listHtml += "</i></b><b><i>"
                             buffOneStar = false
                             buffTwoStar = false
                         }
