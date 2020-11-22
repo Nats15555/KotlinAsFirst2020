@@ -346,35 +346,93 @@ fun waveHtml(string: String): String {
     return str
 }
 
-fun equalsInStarHtml(string: String): String {
+fun star(string: String): List<String> {
+    var splitStringStar = Regex("""[^*]""").split(string).toMutableList()
+    splitStringStar.removeAll { it == "" }
+    return splitStringStar
+}
+
+fun equalsInStarHtml(string: String, list: List<String>): String {
+    var splitStringStar = list
+    val listHtml = listOf<String>().toMutableList()
+    var splitStringNotStar = Regex("""(?:\*)+""").split(string).toMutableList()
+    splitStringNotStar.removeAll { it == "" }
     var buffOneStar = true
     var buffTwoStar = true
     var str = ""
     var i = 0
-    while (i < string.length) {
+    if (splitStringStar.size - splitStringNotStar.size < 0) {
+        str = splitStringNotStar[0]
+        splitStringNotStar.removeAt(0)
+    } else {
+        str = ""
+    }
+    var m = 0
+    while (m < splitStringStar.size) {
         when {
-            string[i] == '*' && string[i + 1] == '*' && buffTwoStar -> {
-                str+="<b>"
-                buffTwoStar=false
-                i++
+            splitStringStar[m].length >= 3 -> {
+                when {
+                    splitStringStar[m].length - 3 == 0 -> {
+                        if (buffOneStar && buffTwoStar) {
+                            listHtml += "<b><i>"
+                            buffOneStar = false
+                            buffTwoStar = false
+                        } else {
+                            if (splitStringStar[m - 1].length >= 2) {
+                                listHtml += "</b></i>"
+                                buffOneStar = true
+                                buffTwoStar = true
+                            } else {
+                                listHtml += "</i></b>"
+                                buffOneStar = true
+                                buffTwoStar = true
+                            }
+                        }
+                    }
+                    splitStringStar[m].length - 3 == 1 -> {
+                        listHtml += "</i><b><i>"
+                        buffOneStar = false
+                        buffTwoStar = false
+                    }
+                    splitStringStar[m].length - 3 == 2 -> {
+                        listHtml += "</b><b><i>"
+                        buffOneStar = false
+                        buffTwoStar = false
+                    }
+                    splitStringStar[m].length - 3 == 3 -> {
+                        if (splitStringStar[m - 1].length >= 2) {
+                            listHtml += "</i></b><b><i>"
+                            buffOneStar = false
+                            buffTwoStar = false
+                        } else {
+                            listHtml += "</b></i><b><i>"
+                            buffOneStar = false
+                            buffTwoStar = false
+                        }
+                    }
+                }
             }
-            string[i] == '*' && string[i + 1] == '*' && !buffTwoStar -> {
-                str+="</b>"
-                buffTwoStar=true
-                i++
+            splitStringStar[m].length == 2 && buffTwoStar -> {
+                listHtml += "<b>"
+                buffTwoStar = false
             }
-            string[i] == '*' && string[i + 1] != '*' && buffOneStar -> {
-                str+="<i>"
-                buffOneStar=false
+            splitStringStar[m].length == 2 && !buffTwoStar -> {
+                listHtml += "</b>"
+                buffTwoStar = true
             }
-            string[i] == '*' && string[i + 1] != '*' && !buffOneStar -> {
-                str+="</i>"
-                buffOneStar=true
+            splitStringStar[m].length == 1 && buffOneStar -> {
+                listHtml += "<i>"
+                buffOneStar = false
             }
-            else -> {
-                str += string[i]
+            splitStringStar[m].length == 1 && !buffOneStar -> {
+                listHtml += "</i>"
+                buffOneStar = true
             }
         }
+        m++
+    }
+    while (i<splitStringStar.size){
+        str+=listHtml[i]+splitStringNotStar[i]
         i++
     }
     return str
@@ -384,6 +442,7 @@ fun equalsInStarHtml(string: String): String {
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var f = false
+    var list = listOf<String>()
     var string = "<html><body><p>"
     for (line in File(inputName).readLines()) {
 
@@ -393,13 +452,15 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 f = false
             }
             line.isNotEmpty() -> {
+                list += star(line)
                 string += line
                 f = true
             }
         }
     }
     val star = "$string</p></body></html>"
-    writer.write(equalsInStarHtml(waveHtml(star)))
+
+    writer.write(equalsInStarHtml(waveHtml(star), list))
     writer.close()
     return
 }
