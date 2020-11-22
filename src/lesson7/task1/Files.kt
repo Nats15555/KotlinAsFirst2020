@@ -337,21 +337,13 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 
-fun waveHtml(string: String): String {
-    var str = string
-    while (str.contains("~~")) {
-        str = str.replaceFirst("~~", "<s>")
-        str = str.replaceFirst("~~", "</s>")
-    }
-    return str
-}
-
 
 fun equalsInStarHtml(string: String): String {
     var str = string
     var i = 0
     var buffOne = true
     var buffTwo = true
+    var buffWave = true
     while (i < str.length) {
         when {
             (str[i] == '*' && str[i + 1] == '*' && !buffTwo) -> {
@@ -372,6 +364,16 @@ fun equalsInStarHtml(string: String): String {
             (str[i] == '*' && buffOne) -> {
                 str = str.replaceFirst("*", "<i>")
                 buffOne = false
+            }
+            (str[i] == '~' && str[i + 1] == '~' && buffWave) -> {
+                str = str.replaceFirst("~~", "<s>")
+                buffWave = false
+                i++
+            }
+            (str[i] == '~' && str[i + 1] == '~' && !buffWave) -> {
+                str = str.replaceFirst("~~", "</s>")
+                buffWave = true
+                i++
             }
         }
         i++
@@ -398,7 +400,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
     }
     val star = "$string</p></body></html>"
-    writer.write(equalsInStarHtml(waveHtml(star)))
+    writer.write(equalsInStarHtml(star))
     writer.close()
     return
 }
