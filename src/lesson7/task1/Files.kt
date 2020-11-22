@@ -438,7 +438,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 f = false
             }
             line.isNotEmpty() -> {
-                string += line.replaceFirst("\t","")
+                string += line.replaceFirst(Regex("""(.\t)"""),"")
                 f = true
             }
         }
