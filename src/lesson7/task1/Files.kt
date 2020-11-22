@@ -347,81 +347,35 @@ fun waveHtml(string: String): String {
 }
 
 fun equalsInStarHtml(string: String): String {
-    var splitStringStar = Regex("""[^*]""").split(string).toMutableList()
-    var splitStringNotStar = Regex("""(?:\*)+""").split(string).toMutableList()
-    splitStringStar.removeAll { it == "" }
-    splitStringNotStar.removeAll { it == "" }
     var buffOneStar = true
     var buffTwoStar = true
     var str = ""
-    var i = splitStringNotStar.size - 1
-    if (splitStringStar.size - splitStringNotStar.size < 0) {
-        str = splitStringNotStar[0]
-        splitStringNotStar.removeAt(0)
-    } else {
-        str = ""
-    }
-    var m = 0
-    while (i > 0) {
+    var i = 0
+    while (i < string.length) {
         when {
-            splitStringStar[m].contains("******") && !buffOneStar && !buffTwoStar -> {
-                if (splitStringStar[m - 1].contains("**")) {
-                    str += "</b></i><b><i>" + splitStringNotStar[m]
-                    buffOneStar = false
-                    buffTwoStar = false
-                } else {
-                    str += "</i></b><b><i>" + splitStringNotStar[m]
-                    buffOneStar = false
-                    buffTwoStar = false
-                }
+            string[i] == '*' && string[i + 1] == '*' && buffTwoStar -> {
+                str+="<b>"
+                buffTwoStar=false
+                i++
             }
-            splitStringStar[m].contains("*****") && !buffTwoStar -> {
-                str += "</b><b><i>" + splitStringNotStar[m]
-                buffTwoStar = false
+            string[i] == '*' && string[i + 1] == '*' && !buffTwoStar -> {
+                str+="</b>"
+                buffTwoStar=true
+                i++
             }
-            splitStringStar[m].contains("****") && !buffOneStar -> {
-                str += "</i><b><i>" + splitStringNotStar[m]
-                buffOneStar = false
+            string[i] == '*' && string[i + 1] != '*' && buffOneStar -> {
+                str+="<i>"
+                buffOneStar=false
             }
-            splitStringStar[m].contains("***") && buffOneStar && buffTwoStar -> {
-                str += "<b><i>" + splitStringNotStar[m]
-                buffOneStar = false
-                buffTwoStar = false
+            string[i] == '*' && string[i + 1] != '*' && !buffOneStar -> {
+                str+="</i>"
+                buffOneStar=true
             }
-            splitStringStar[m].contains("***") && !buffOneStar && !buffTwoStar -> {
-                if (splitStringStar[m - 1].contains("***")) {
-                    str += "</i></b>" + splitStringNotStar[m]
-                    buffOneStar = true
-                    buffTwoStar = true
-                } else if (splitStringStar[m - 1].contains("**")) {
-                    str += "</b></i>" + splitStringNotStar[m]
-                    buffOneStar = true
-                    buffTwoStar = true
-                } else {
-                    str += "</i></b>" + splitStringNotStar[m]
-                    buffOneStar = true
-                    buffTwoStar = true
-                }
-            }
-            splitStringStar[m].contains("**") && !buffTwoStar -> {
-                str += "</b>" + splitStringNotStar[m]
-                buffTwoStar = true
-            }
-            splitStringStar[m].contains("**") && buffTwoStar -> {
-                str += "<b>" + splitStringNotStar[m]
-                buffTwoStar = false
-            }
-            splitStringStar[m].contains("*") && !buffOneStar -> {
-                str += "</i>" + splitStringNotStar[m]
-                buffOneStar = true
-            }
-            splitStringStar[m].contains("*") && buffOneStar -> {
-                str += "<i>" + splitStringNotStar[m]
-                buffOneStar = false
+            else -> {
+                str += string[i]
             }
         }
-        i--
-        m++
+        i++
     }
     return str
 }
@@ -438,7 +392,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 f = false
             }
             line.isNotEmpty() -> {
-                string += line.replaceFirst(Regex("""(.\t)"""),"")
+                string += line.replace(Regex("""(.\t)"""), "")
                 f = true
             }
         }
