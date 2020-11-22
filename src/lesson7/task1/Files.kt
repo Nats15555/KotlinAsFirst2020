@@ -430,35 +430,21 @@ fun equalsInStarHtml(string: String): String {
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var f = false
-    writer.newLine()
-    writer.write("<html>")
-    writer.newLine()
-    writer.write("<body>")
-    writer.newLine()
-    writer.write("<p>")
+    writer.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
         when {
             line.isEmpty() && f == true -> {
-                writer.newLine()
-                writer.write("</p>")
-                writer.newLine()
-                writer.write("<p>")
+                writer.write("</p><p>")
                 f = false
             }
             line.isNotEmpty() -> {
-                writer.newLine()
                 var star = equalsInStarHtml(line)
                 writer.write(waveHtml(star))
                 f = true
             }
         }
     }
-    writer.newLine()
-    writer.write("</p>")
-    writer.newLine()
-    writer.write("</body>")
-    writer.newLine()
-    writer.write("</html>")
+    writer.write("</p></body></html>")
     writer.close()
     return
 }
