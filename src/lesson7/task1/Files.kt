@@ -443,7 +443,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             }
         }
     }
-    val star = string
+    val star = "$string</p></body></html>"
     writer.write(waveHtml(star))
     writer.close()
     return
