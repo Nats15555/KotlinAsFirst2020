@@ -317,7 +317,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
  *
  * Пример входного файла:
 Lorem ipsum *dolor sit amet*, consectetur **adipiscing** elit.
-Vestibulum lobortis, ~~Est vehicula rutrum *suscipit*~~, ipsum ~~lib~~ero *placerat **tortor***,
+Vestibulum lobortis. ~~Est vehicula rutrum *suscipit*~~, ipsum ~~lib~~ero *placerat **tortor***.
 
 Suspendisse ~~et elit in enim tempus iaculis~~.
  *
@@ -386,8 +386,9 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var f = false
     var string = "<html><body><p>"
     for (line in File(inputName).readLines()) {
+
         when {
-            line.isEmpty() && f -> {
+            (line.isEmpty() || line.matches(Regex("""(?:\s)+"""))) && f -> {
                 string += "</p><p>"
                 f = false
             }
