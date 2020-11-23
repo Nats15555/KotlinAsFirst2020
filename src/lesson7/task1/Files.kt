@@ -130,8 +130,8 @@ fun sibilants(inputName: String, outputName: String) {
         writer.newLine()
         f = false
     }
-writer.close()
-return
+    writer.close()
+    return
 }
 
 /**
@@ -320,44 +320,90 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-
+fun waveHtml(string: String): String {
+    var str = string
+    while (str.contains("~~")) {
+        str = str.replaceFirst("~~", "<s>")
+        str = str.replaceFirst("~~", "</s>")
+    }
+    return str
+}
 
 fun equalsInStarHtml(string: String): String {
     var str = string
+    var splitN = Regex("""[\n]""").split(str)
+    var buffOneStar = true
+    var buffTwoStar = true
+    val splitStringStar = listOf<String>().toMutableList()
+    val splitStringNotStar = Regex("""(?:\*)+""").split(str).toMutableList()
+    splitStringNotStar.removeAll { it == "" }
+    for (element in splitN) {
+        splitStringStar += Regex("""[^*]""").split(element).toMutableList()
+        splitStringStar.removeAll { it == "" }
+    }
     var i = 0
-    var buffOne = true
-    var buffTwo = true
-    var buffWave = true
-    while (i < str.length) {
+    if (splitStringStar.size - splitStringNotStar.size < 0) {
+        str = splitStringNotStar[0]
+        splitStringNotStar.removeAt(0)
+    } else {
+        str = ""
+    }
+    while (i <= splitStringNotStar.size - 1) {
         when {
-            (str[i] == '*' && str[i + 1] == '*' && !buffTwo) -> {
-                str = str.replaceFirst("**", "</b>")
-                buffTwo = true
-                i++
+            splitStringStar[i].contains("******") && !buffOneStar && !buffTwoStar -> {
+                if (splitStringStar[i - 1].contains("**")) {
+                    str += "</b></i><b><i>" + splitStringNotStar[i]
+                    buffOneStar = false
+                    buffTwoStar = false
+                } else {
+                    str += "</i></b><b><i>" + splitStringNotStar[i]
+                    buffOneStar = false
+                    buffTwoStar = false
+                }
             }
-            (str[i] == '*' && str[i + 1] == '*' && buffTwo) -> {
-                str = str.replaceFirst("**", "<b>")
-                buffTwo = false
-                i++
+            splitStringStar[i].contains("*****") && !buffTwoStar -> {
+                str += "</b><b><i>" + splitStringNotStar[i]
+                buffTwoStar = false
             }
-            (str[i] == '*' && !buffOne) -> {
-                str = str.replaceFirst("*", "</i>")
-                buffOne = true
+            splitStringStar[i].contains("****") && !buffOneStar -> {
+                str += "</i><b><i>" + splitStringNotStar[i]
+                buffOneStar = false
             }
-
-            (str[i] == '*' && buffOne) -> {
-                str = str.replaceFirst("*", "<i>")
-                buffOne = false
+            splitStringStar[i].contains("***") && buffOneStar && buffTwoStar -> {
+                str += "<b><i>" + splitStringNotStar[i]
+                buffOneStar = false
+                buffTwoStar = false
             }
-            (str[i] == '~' && str[i + 1] == '~' && buffWave) -> {
-                str = str.replaceFirst("~~", "<s>")
-                buffWave = false
-                i++
+            splitStringStar[i].contains("***") && !buffOneStar && !buffTwoStar -> {
+                if (splitStringStar[i - 1].contains("***")) {
+                    str += "</i></b>" + splitStringNotStar[i]
+                    buffOneStar = true
+                    buffTwoStar = true
+                } else if (splitStringStar[i - 1].contains("**")) {
+                    str += "</b></i>" + splitStringNotStar[i]
+                    buffOneStar = true
+                    buffTwoStar = true
+                } else {
+                    str += "</i></b>" + splitStringNotStar[i]
+                    buffOneStar = true
+                    buffTwoStar = true
+                }
             }
-            (str[i] == '~' && str[i + 1] == '~' && !buffWave) -> {
-                str = str.replaceFirst("~~", "</s>")
-                buffWave = true
-                i++
+            splitStringStar[i].contains("**") && !buffTwoStar -> {
+                str += "</b>" + splitStringNotStar[i]
+                buffTwoStar = true
+            }
+            splitStringStar[i].contains("**") && buffTwoStar -> {
+                str += "<b>" + splitStringNotStar[i]
+                buffTwoStar = false
+            }
+            splitStringStar[i].contains("*") && !buffOneStar -> {
+                str += "</i>" + splitStringNotStar[i]
+                buffOneStar = true
+            }
+            splitStringStar[i].contains("*") && buffOneStar -> {
+                str += "<i>" + splitStringNotStar[i]
+                buffOneStar = false
             }
         }
         i++
@@ -369,9 +415,8 @@ fun equalsInStarHtml(string: String): String {
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var f = false
-    var string = "<html><body><p>"
+    var string = ""
     for (line in File(inputName).readLines()) {
-
         when {
             (line.isEmpty() || line.matches(Regex("""(?:\s)+"""))) && f -> {
                 string += "</p><p>"
@@ -386,8 +431,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             }
         }
     }
-    val star = "$string</p></body></html>"
-    writer.write(equalsInStarHtml(star))
+    val star = string
+    writer.write("<html><body><p>" + waveHtml(equalsInStarHtml(star)) + "</p></body></html>")
     writer.close()
     return
 }
