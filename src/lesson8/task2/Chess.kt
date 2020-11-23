@@ -65,8 +65,7 @@ fun rookMoveNumber(start: Square, end: Square): Int {
     return when {
         start.column == null || start.row == null || end.column == null || end.row == null ->
             throw IllegalArgumentException("null")
-        (start.column == end.column && start.row != end.row)
-                || (start.column != end.column && start.row == end.row) -> 1
+        (start.column == end.column) xor (start.row == end.row) -> 1
         (start.column == end.column && start.row == end.row) -> 0
         else -> 2
     }
