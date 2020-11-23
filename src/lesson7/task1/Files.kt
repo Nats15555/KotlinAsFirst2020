@@ -104,47 +104,34 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
+    val string = "жЖшШщЩчЧ"
+    val rules = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у', 'Ы' to 'И', 'Я' to 'А', 'Ю' to 'У')
     val writer = File(outputName).bufferedWriter()
-    var i = 0
     var f = false
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             writer.newLine()
         } else {
-            i = 0
+            var i = 0
             while (i < line.length) {
-                if (!f) {
-                    if (line[i] == 'ж' || line[i] == 'ш' || line[i] == 'щ' || line[i] == 'ч' ||
-                        line[i] == 'Ж' || line[i] == 'Ш' || line[i] == 'Щ' || line[i] == 'Ч'
-                    ) f = true
+                val m = "" + line[i]
+                if (!f || string.contains(Regex("""[$m]"""))) {
+                    if (string.contains(Regex("""[$m]"""))) f = true
                     writer.write("" + line[i])
                 } else {
-                    when {
-                        line[i] == 'ы' -> writer.write("и")
-                        line[i] == 'ю' -> writer.write("у")
-                        line[i] == 'я' -> writer.write("а")
-                        line[i] == 'Ы' -> writer.write("И")
-                        line[i] == 'Ю' -> writer.write("У")
-                        line[i] == 'Я' -> writer.write("А")
-                        line[i] == 'ж' || line[i] == 'ш' || line[i] == 'щ' || line[i] == 'ч' ||
-                                line[i] == 'Ж' || line[i] == 'Ш' || line[i] == 'Щ' || line[i] == 'Ч' -> {
-                            f = true
-                            writer.write("" + line[i])
-                            i++
-                            continue
-                        }
-                        else -> writer.write("" + line[i])
-                    }
+                    if (rules[line[i]] != null) {
+                        writer.write("" + rules[line[i]])
+                    } else writer.write("" + line[i])
                     f = false
                 }
                 i++
             }
-            writer.newLine()
-            f = false
         }
+        writer.newLine()
+        f = false
     }
-    writer.close()
-    return
+writer.close()
+return
 }
 
 /**
