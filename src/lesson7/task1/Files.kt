@@ -378,7 +378,7 @@ fun equalsInStarHtml(string: String): String {
         }
         i++
     }
-    return Regex("""[⍔]""").replace(str, "")
+    return str
 }
 
 
@@ -391,10 +391,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         when {
             (line.isEmpty() || line.matches(Regex("""(?:\s)+"""))) && f -> {
                 string += "</p><p>"
+                if(line.matches(Regex("""(?:\s)+"""))){
+                    string += line
+                }
                 f = false
             }
             line.isNotEmpty() -> {
-                string += line + "⍔"
+                string += line
                 f = true
             }
         }
